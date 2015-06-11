@@ -5,14 +5,20 @@ from django.contrib.auth.models import User
 class Country(models.Model):
     name = models.CharField(max_length=30)
 
+    def __unicode__(self):
+        return self.name
+
 
 class City(models.Model):
     name = models.CharField(max_length=30)
     country = models.ForeignKey(Country)
 
+    def __unicode__(self):
+        return self.name
+
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, related_name="profile")
+    user = models.OneToOneField(User, related_name="%(app_label)s_%(class)s_related")
     phone_number = models.CharField(max_length=15, null=True)
     reg_datetime = models.DateTimeField(auto_now_add=True)
     is_banned = models.BooleanField(default=False)

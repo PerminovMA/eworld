@@ -1,5 +1,6 @@
 from django.db import models
-from apps.profiles.models import City
+from profiles.models import City
+from django.contrib.auth.models import User
 
 
 class BaseEvent(models.Model):
@@ -10,7 +11,7 @@ class BaseEvent(models.Model):
     price = models.FloatField(default=0)
     description = models.TextField()
     requirements = models.TextField()
-    order_views = models.ManyToManyField()
+    order_views = models.ManyToManyField(User)
 
     class Meta:
         abstract = True
