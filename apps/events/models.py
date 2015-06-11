@@ -1,6 +1,5 @@
 from django.db import models
-from profiles.models import City
-from django.contrib.auth.models import User
+from profiles.models import City, UserProfile
 
 
 class BaseEvent(models.Model):
@@ -11,7 +10,7 @@ class BaseEvent(models.Model):
     price = models.FloatField(default=0)
     description = models.TextField()
     requirements = models.TextField()
-    order_views = models.ManyToManyField(User)
+    order_views = models.ManyToManyField(UserProfile, null=True, blank=True)
 
     class Meta:
         abstract = True
@@ -19,10 +18,10 @@ class BaseEvent(models.Model):
 
 class Order(BaseEvent):
     FINDING_MANAGER = 'FINDING_MANAGER'
-    FOUNDED_MANAGER = 'FOUNDED_MANAGER'  # ? check translate
-    IN_WORK = 'IN_WORK'  # ? check translate
-    COMPLETED = 'COMPLETED'  # ? check translate
-    ORDER_STATUSES = ((FINDING_MANAGER, 'Finding event manager'), (FOUNDED_MANAGER, 'Event manager founded'),
+    FOUND_MANAGER = 'FOUND_MANAGER'
+    IN_WORK = 'IN_WORK'
+    COMPLETED = 'COMPLETED'
+    ORDER_STATUSES = ((FINDING_MANAGER, 'Finding event manager'), (FOUND_MANAGER, 'Event manager found'),
                       (IN_WORK, 'Order in progress'), (COMPLETED, 'Order completed'))
 
     order_state = models.CharField(choices=ORDER_STATUSES, max_length=15)
