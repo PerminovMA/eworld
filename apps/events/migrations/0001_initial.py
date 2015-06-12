@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
                 ('description', models.TextField()),
                 ('requirements', models.TextField(null=True, blank=True)),
                 ('start_price', models.FloatField()),
-                ('status', models.CharField(max_length=18, choices=[(b'AUCTION_IN_PROCESS', b'auction in process'), (b'MANAGER_SELECTING', b'manager_selecting'), (b'MANAGER_SELECTED', b'manager_selected'), (b'ORDER_IN_PROCESS', b'order_in_process'), (b'ORDER_COMPLETE', b'ORDER_COMPLETE')])),
+                ('status', models.CharField(default=b'AUCTION_IN_PROCESS', max_length=18, choices=[(b'AUCTION_IN_PROCESS', b'auction in process'), (b'MANAGER_SELECTING', b'manager_selecting'), (b'MANAGER_SELECTED', b'manager_selected'), (b'ORDER_IN_PROCESS', b'order_in_process'), (b'ORDER_COMPLETE', b'ORDER_COMPLETE')])),
             ],
             options={
                 'abstract': False,
