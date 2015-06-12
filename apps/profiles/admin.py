@@ -22,11 +22,19 @@ class UserProfileAdmin(UserAdmin):
         (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
     )
 
+    list_display = ('username', 'email', 'is_event_manager', 'is_client', 'is_staff')
+
 
 @admin.register(Message)
 class MessageAdmin(admin.ModelAdmin):
     list_display = ('sender', 'receiver', 'theme', 'creation_datetime')
 
+
+@admin.register(EventManager)
+class EventManagerAdmin(admin.ModelAdmin):
+    list_display = ('user', 'legal_status', 'activity_index')
+
 admin.site.register(Country)
+admin.site.register(Client)
 
 admin.site.unregister(Group)

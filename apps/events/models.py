@@ -54,12 +54,11 @@ class AuctionOrder(BaseEvent):
                         (BaseEvent.ORDER_COMPLETE, 'ORDER_COMPLETE'))
 
     start_price = models.FloatField()
-    status = models.CharField(choices=AUCTION_STATUSES, max_length=18)
-
+    status = models.CharField(choices=AUCTION_STATUSES, max_length=18, default=AUCTION_IN_PROCESS)
 
     @property
     def current_price(self):
-        pass  # TODO must be implemented
+        return 123
 
     def __unicode__(self):
         return self.name

@@ -9,7 +9,9 @@ class OrderAdmin(admin.ModelAdmin):
 
 @admin.register(AuctionOrder)
 class AuctionAdmin(admin.ModelAdmin):
-    list_display = ('name', 'owner', 'status')
+    list_display = ('name', 'owner', 'status', 'current_price')
 
 
-admin.site.register(Bet)
+@admin.register(Bet)
+class BetAdmin(admin.ModelAdmin):
+    list_display = ('auction', 'owner', 'amount')

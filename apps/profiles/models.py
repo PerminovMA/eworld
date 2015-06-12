@@ -22,6 +22,20 @@ class UserProfile(AbstractUser):
     is_banned = models.BooleanField(default=False)
     cities = models.ManyToManyField(City)
 
+    @property
+    def is_client(self):
+        try:
+            return self.client is not None
+        except Client.DoesNotExist:
+            return False
+
+    @property
+    def is_event_manager(self):
+        try:
+            return self.event_manager is not None
+        except EventManager.DoesNotExist:
+            return False
+
     def __unicode__(self):
         return self.username
 
@@ -40,7 +54,7 @@ class EventManager(models.Model):
     LEGAL_STATUSES = ((LEGAL_PERSON, 'Legal person'), (INDIVIDUAL_PERSON, 'Individual person'))
     legal_status = models.CharField(choices=LEGAL_STATUSES, max_length=10)
 
-    user = models.OneToOneField(UserProfile)
+    user = models.OneToOneField(UserProfile, related_name='event_manager')
     activity_index = models.FloatField(default=0.0)
 
     def __unicode__(self):
