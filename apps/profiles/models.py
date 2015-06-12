@@ -45,7 +45,7 @@ class Client(models.Model):
     activity_index = models.FloatField(default=0.0)
 
     def __unicode__(self):
-        return u'%s client profile' % self.user.email
+        return u'Client %s' % self.user
 
 
 class EventManager(models.Model):
@@ -58,7 +58,7 @@ class EventManager(models.Model):
     activity_index = models.FloatField(default=0.0)
 
     def __unicode__(self):
-        return u'%s event manager profile' % self.user.email
+        return u'Event manager %s' % self.user
 
 
 class Message(models.Model):

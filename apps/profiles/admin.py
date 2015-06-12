@@ -24,6 +24,24 @@ class UserProfileAdmin(UserAdmin):
 
     list_display = ('username', 'email', 'is_event_manager', 'is_client', 'is_staff')
 
+    class UserTypeFilter(admin.SimpleListFilter):
+        title = _('user type')
+        parameter_name = 'user_type'
+
+        def lookups(self, request, model_admin):
+            return (
+                ('client', _('Client')),
+                ('event_manager', _('Event manager')),
+            )
+
+        def queryset(self, request, queryset):
+            if self.value() == 'client':
+                return queryset.filter(client__isnull=False)
+            if self.value() == 'event_manager':
+                return queryset.filter(event_manager__isnull=False)
+
+    list_filter = ('is_staff', 'is_superuser', 'is_active', 'groups', UserTypeFilter)
+
 
 @admin.register(Message)
 class MessageAdmin(admin.ModelAdmin):
