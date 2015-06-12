@@ -18,7 +18,7 @@ class City(models.Model):
 
 
 class UserProfile(AbstractUser):
-    phone_number = models.CharField(max_length=15, null=True)
+    phone_number = models.CharField(max_length=15, null=True, blank=True)
     is_banned = models.BooleanField(default=False)
     cities = models.ManyToManyField(City)
 
@@ -45,3 +45,19 @@ class EventManager(models.Model):
 
     def __unicode__(self):
         return u'%s event manager profile' % self.user.email
+
+
+class Message(models.Model):
+    sender = models.ForeignKey(UserProfile, related_name='outgoing_messages_set')
+    receiver = models.ForeignKey(UserProfile, related_name='incoming_messages_set')
+    theme = models.CharField(max_length=150, null=True, blank=True)
+    text = models.TextField()
+    is_read = models.BooleanField(default=False)
+    creation_datetime = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = (('sender', 'receiver'),)
+
+    def __unicode__(self):
+        return self.theme
+

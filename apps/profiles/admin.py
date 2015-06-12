@@ -5,11 +5,13 @@ from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import ugettext_lazy as _
 
 
+@admin.register(City)
 class CityAdmin(admin.ModelAdmin):
     list_display = ('name', 'country')
     search_fields = ['name']
 
 
+@admin.register(UserProfile)
 class UserProfileAdmin(UserAdmin):
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
@@ -21,8 +23,10 @@ class UserProfileAdmin(UserAdmin):
     )
 
 
-admin.site.register(UserProfile, UserProfileAdmin)
+@admin.register(Message)
+class MessageAdmin(admin.ModelAdmin):
+    list_display = ('sender', 'receiver', 'theme', 'creation_datetime')
+
 admin.site.register(Country)
-admin.site.register(City, CityAdmin)
 
 admin.site.unregister(Group)
