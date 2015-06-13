@@ -14,7 +14,7 @@ class Category(models.Model):
         return self.name
 
 
-class BaseEvent(models.Model):
+class BaseOrder(models.Model):
     ORDER_COMPLETE = 'ORDER_COMPLETE'
     ORDER_IN_PROCESS = 'ORDER_IN_PROCESS'
 
@@ -26,17 +26,17 @@ class BaseEvent(models.Model):
     description = models.TextField()
     requirements = models.TextField(null=True, blank=True)
     order_views = models.ManyToManyField(UserProfile, blank=True, related_name='%(class)s_views_set')
-    categories = models.ManyToManyField(Category, blank=True, related_name='%(class)s_categories_set')
+    categories = models.ManyToManyField(Category, blank=True, related_name='%(class)s_set')
 
     class Meta:
         abstract = True
 
 
-class Order(BaseEvent):
+class Order(BaseOrder):
     FINDING_MANAGER = 'FINDING_MANAGER'
     FOUND_MANAGER = 'FOUND_MANAGER'
     ORDER_STATUSES = ((FINDING_MANAGER, 'Finding event manager'), (FOUND_MANAGER, 'Event manager found'),
-                      (BaseEvent.ORDER_IN_PROCESS, 'Order in process'), (BaseEvent.ORDER_COMPLETE, 'Order complete'))
+                      (BaseOrder.ORDER_IN_PROCESS, 'Order in process'), (BaseOrder.ORDER_COMPLETE, 'Order complete'))
 
     status = models.CharField(choices=ORDER_STATUSES, max_length=16, default=FINDING_MANAGER)
     price = models.FloatField()
@@ -45,13 +45,13 @@ class Order(BaseEvent):
         return self.name
 
 
-class AuctionOrder(BaseEvent):
+class AuctionOrder(BaseOrder):
     AUCTION_IN_PROCESS = 'AUCTION_IN_PROCESS'
     MANAGER_SELECTING = 'MANAGER_SELECTING'
     MANAGER_SELECTED = 'MANAGER_SELECTED'
     AUCTION_STATUSES = ((AUCTION_IN_PROCESS, 'auction in process'), (MANAGER_SELECTING, 'manager_selecting'),
-                        (MANAGER_SELECTED, 'manager_selected'), (BaseEvent.ORDER_IN_PROCESS, 'order_in_process'),
-                        (BaseEvent.ORDER_COMPLETE, 'ORDER_COMPLETE'))
+                        (MANAGER_SELECTED, 'manager_selected'), (BaseOrder.ORDER_IN_PROCESS, 'order_in_process'),
+                        (BaseOrder.ORDER_COMPLETE, 'ORDER_COMPLETE'))
 
     start_price = models.FloatField()
     status = models.CharField(choices=AUCTION_STATUSES, max_length=18, default=AUCTION_IN_PROCESS)

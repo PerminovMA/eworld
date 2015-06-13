@@ -51,8 +51,15 @@ class MessageAdmin(admin.ModelAdmin):
 @admin.register(EventManager)
 class EventManagerAdmin(admin.ModelAdmin):
     list_display = ('user', 'legal_status', 'activity_index')
+    search_fields = ['user__email', 'user__username']
+
+
+@admin.register(Client)
+class ClientAdmin(admin.ModelAdmin):
+    list_display = ('user', 'activity_index')
+    search_fields = ['user__email', 'user__username']
+
 
 admin.site.register(Country)
-admin.site.register(Client)
 
 admin.site.unregister(Group)
