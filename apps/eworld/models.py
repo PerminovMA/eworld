@@ -4,8 +4,7 @@ from django.contrib.contenttypes.models import ContentType
 
 
 class Attach(models.Model):
-    # file = models.FileField()
-    file = models.CharField(max_length=10, default='hello!')
+    file = models.FileField()
     content_type = models.ForeignKey(ContentType)
     object_id = models.CharField(max_length=10)
     content_object = GenericForeignKey()
