@@ -1,5 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from eworld.utils import generate_filename
+from random import randint
+from django.conf import settings
 
 
 class Country(models.Model):
@@ -18,9 +21,15 @@ class City(models.Model):
 
 
 class UserProfile(AbstractUser):
+    def get_upload_avatar_filename(self, filename):
+        return "avatars/%s/%s/" % (str(randint(1, settings.COUNT_FOLDERS)),
+                                   str(randint(1, settings.COUNT_FOLDERS))) + generate_filename(filename)
+
     phone_number = models.CharField(max_length=15, null=True, blank=True)
     is_banned = models.BooleanField(default=False)
     cities = models.ManyToManyField(City)
+    about_me = models.TextField(null=True, blank=True)
+    avatar = models.ImageField(null=True, blank=True, upload_to=get_upload_avatar_filename)
 
     @property
     def is_client(self):
@@ -35,6 +44,16 @@ class UserProfile(AbstractUser):
             return self.event_manager is not None
         except EventManager.DoesNotExist:
             return False
+
+    def save(self, *args, **kwargs):
+        """ delete old avatar when replacing by updating the file """
+        try:
+            this = UserProfile.objects.get(id=self.id)
+            if this.avatar != self.avatar:
+                this.avatar.delete(save=False)
+        except UserProfile.DoesNotExist:
+            pass  # When new photo then we do nothing, normal case
+        super(UserProfile, self).save(*args, **kwargs)
 
     def __unicode__(self):
         return self.username

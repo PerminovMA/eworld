@@ -15,7 +15,7 @@ class CityAdmin(admin.ModelAdmin):
 class UserProfileAdmin(UserAdmin):
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
-        (_('Custom info'), {'fields': ('is_banned', 'phone_number', 'cities')}),
+        (_('Custom info'), {'fields': ('is_banned', 'phone_number', 'cities', 'about_me', 'avatar')}),
         (_('Personal info'), {'fields': ('first_name', 'last_name', 'email')}),
         (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser',
                                        'groups', 'user_permissions')}),
