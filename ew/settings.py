@@ -41,6 +41,7 @@ INSTALLED_APPS = (
     'profiles',
     'events',
     'django_extensions',
+    'eworld',
 )
 
 MIDDLEWARE_CLASSES = (

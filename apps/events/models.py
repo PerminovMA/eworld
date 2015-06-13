@@ -2,6 +2,8 @@
 
 from django.db import models
 from profiles.models import City, UserProfile, EventManager, Client
+from django.contrib.contenttypes.fields import GenericRelation
+from eworld.models import Attach
 
 
 class Category(models.Model):
@@ -40,6 +42,8 @@ class Order(BaseOrder):
 
     status = models.CharField(choices=ORDER_STATUSES, max_length=16, default=FINDING_MANAGER)
     price = models.FloatField()
+    attaches = GenericRelation(Attach, related_query_name='order', content_type_field='content_type',
+                               object_id_field='object_id')
 
     def __unicode__(self):
         return self.name
@@ -55,6 +59,8 @@ class AuctionOrder(BaseOrder):
 
     start_price = models.FloatField()
     status = models.CharField(choices=AUCTION_STATUSES, max_length=18, default=AUCTION_IN_PROCESS)
+    attaches = GenericRelation(Attach, related_query_name='auction_order', content_type_field='content_type',
+                               object_id_field='object_id')
 
     def get_best_bet(self, count=1):
         if count <= 0:
