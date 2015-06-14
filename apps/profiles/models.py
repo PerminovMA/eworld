@@ -70,7 +70,7 @@ def user_profile_avatar_delete(sender, instance, **kwargs):
 
 class Client(models.Model):
     user = models.OneToOneField(UserProfile)
-    activity_index = models.FloatField(default=0.0)
+    activity_index = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
 
     def __unicode__(self):
         return u'Client %s' % self.user
@@ -83,7 +83,7 @@ class EventManager(models.Model):
     legal_status = models.CharField(choices=LEGAL_STATUSES, max_length=10)
 
     user = models.OneToOneField(UserProfile, related_name='event_manager')
-    activity_index = models.FloatField(default=0.0)
+    activity_index = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
 
     def __unicode__(self):
         return u'Event manager %s' % self.user

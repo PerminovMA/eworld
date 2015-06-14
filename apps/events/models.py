@@ -9,8 +9,8 @@ from eworld.models import Attach
 class Category(models.Model):
     name = models.CharField(max_length=20)
     # icon_file
-    order_percent = models.FloatField()
-    auction_percent = models.FloatField()
+    order_percent = models.DecimalField(max_digits=6, decimal_places=2)
+    auction_percent = models.DecimalField(max_digits=6, decimal_places=2)
 
     def __unicode__(self):
         return self.name
@@ -41,7 +41,7 @@ class Order(BaseOrder):
                       (BaseOrder.ORDER_IN_PROCESS, 'Order in process'), (BaseOrder.ORDER_COMPLETE, 'Order complete'))
 
     status = models.CharField(choices=ORDER_STATUSES, max_length=16, default=FINDING_MANAGER)
-    price = models.FloatField()
+    price = models.DecimalField(max_digits=6, decimal_places=2)
     attaches = GenericRelation(Attach, related_query_name='order', content_type_field='content_type',
                                object_id_field='object_id')
 
@@ -57,7 +57,7 @@ class AuctionOrder(BaseOrder):
                         (MANAGER_SELECTED, 'manager_selected'), (BaseOrder.ORDER_IN_PROCESS, 'order_in_process'),
                         (BaseOrder.ORDER_COMPLETE, 'ORDER_COMPLETE'))
 
-    start_price = models.FloatField()
+    start_price = models.DecimalField(max_digits=6, decimal_places=2)
     status = models.CharField(choices=AUCTION_STATUSES, max_length=18, default=AUCTION_IN_PROCESS)
     attaches = GenericRelation(Attach, related_query_name='auction_order', content_type_field='content_type',
                                object_id_field='object_id')
@@ -73,7 +73,7 @@ class AuctionOrder(BaseOrder):
 
 class Bet(models.Model):
     auction = models.ForeignKey(AuctionOrder)
-    amount = models.FloatField()
+    amount = models.DecimalField(max_digits=6, decimal_places=2)
     owner = models.ForeignKey(EventManager)
     creation_datetime = models.DateTimeField(auto_now_add=True)
 
