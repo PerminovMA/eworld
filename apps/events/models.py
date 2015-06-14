@@ -4,16 +4,39 @@ from django.db import models
 from profiles.models import City, UserProfile, EventManager, Client
 from django.contrib.contenttypes.fields import GenericRelation
 from eworld.models import Attach
+from django.db.models.signals import pre_delete
+from django.dispatch.dispatcher import receiver
+from eworld.utils import generate_filename
+
+
+def get_upload_category_icon_path(instance, filename):
+    return "category_icons/" + generate_filename(filename)
 
 
 class Category(models.Model):
     name = models.CharField(max_length=20)
-    # icon_file
+    icon = models.ImageField(upload_to=get_upload_category_icon_path)
     order_percent = models.DecimalField(max_digits=6, decimal_places=2)
     auction_percent = models.DecimalField(max_digits=6, decimal_places=2)
 
+    def save(self, *args, **kwargs):
+        """ delete old icon when replacing by updating the icon """
+        try:
+            this = Category.objects.get(id=self.id)
+            if this.icon != self.icon:
+                this.icon.delete(save=False)
+        except Category.DoesNotExist:
+            pass  # When new photo then we do nothing, normal case
+        super(Category, self).save(*args, **kwargs)
+
     def __unicode__(self):
         return self.name
+
+
+@receiver(pre_delete, sender=Category)
+def category_icon_deleter(sender, instance, **kwargs):
+    """ delete icon when remove object from admin panel """
+    instance.icon.delete(False)
 
 
 class BaseOrder(models.Model):
