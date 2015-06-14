@@ -53,11 +53,27 @@ class EventManagerAdmin(admin.ModelAdmin):
     list_display = ('user', 'legal_status', 'activity_index')
     search_fields = ['user__email', 'user__username']
 
+    class PortfolioInLine(admin.TabularInline):
+        model = Portfolio
+        extra = 1
+
+    inlines = (PortfolioInLine,)
 
 @admin.register(Client)
 class ClientAdmin(admin.ModelAdmin):
     list_display = ('user', 'activity_index')
     search_fields = ['user__email', 'user__username']
+
+
+@admin.register(Portfolio)
+class PortfolioAdmin(admin.ModelAdmin):
+    list_display = ('id', 'event_manager',)
+
+    class PortfolioImageInLine(admin.TabularInline):
+        model = PortfolioImage
+        extra = 1
+
+    inlines = (PortfolioImageInLine,)
 
 
 admin.site.register(Country)

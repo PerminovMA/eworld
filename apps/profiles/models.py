@@ -3,6 +3,8 @@ from django.contrib.auth.models import AbstractUser
 from eworld.utils import generate_filename
 from random import randint
 from django.conf import settings
+from django.db.models.signals import pre_delete
+from django.dispatch.dispatcher import receiver
 
 
 class Country(models.Model):
@@ -20,16 +22,17 @@ class City(models.Model):
         return self.name
 
 
-class UserProfile(AbstractUser):
-    def get_upload_avatar_filename(self, filename):
-        return "avatars/%s/%s/" % (str(randint(1, settings.COUNT_FOLDERS)),
-                                   str(randint(1, settings.COUNT_FOLDERS))) + generate_filename(filename)
+def get_upload_avatar_path(instance, filename):
+    return "avatars/%s/%s/" % (str(randint(1, settings.COUNT_FOLDERS)),
+                               str(randint(1, settings.COUNT_FOLDERS))) + generate_filename(filename)
 
+
+class UserProfile(AbstractUser):
     phone_number = models.CharField(max_length=15, null=True, blank=True)
     is_banned = models.BooleanField(default=False)
     cities = models.ManyToManyField(City)
     about_me = models.TextField(null=True, blank=True)
-    avatar = models.ImageField(null=True, blank=True, upload_to=get_upload_avatar_filename)
+    avatar = models.ImageField(null=True, blank=True, upload_to=get_upload_avatar_path)
 
     @property
     def is_client(self):
@@ -57,6 +60,12 @@ class UserProfile(AbstractUser):
 
     def __unicode__(self):
         return self.username
+
+
+@receiver(pre_delete, sender=UserProfile)
+def user_profile_avatar_delete(sender, instance, **kwargs):
+    """ delete avatar when remove UserProfile object from admin panel """
+    instance.avatar.delete(False)
 
 
 class Client(models.Model):
@@ -94,3 +103,37 @@ class Message(models.Model):
     def __unicode__(self):
         return self.theme
 
+
+class Portfolio(models.Model):
+    categories = models.ManyToManyField('events.Category', blank=True)
+    event_manager = models.ForeignKey(EventManager)
+    creation_date = models.DateTimeField(auto_now_add=True)
+
+    def __unicode__(self):
+        return self.event_manager.user.username + "'s portfolio. ID " + str(self.id)
+
+
+def get_upload_image_path(instance, filename):
+    return "portfolio_images/%s/%s/" % (str(randint(1, settings.COUNT_FOLDERS)),
+                                        str(randint(1, settings.COUNT_FOLDERS))) + generate_filename(filename)
+
+
+class PortfolioImage(models.Model):
+    image = models.ImageField(upload_to=get_upload_image_path)
+    portfolio = models.ForeignKey(Portfolio)
+
+    def save(self, *args, **kwargs):
+        """ delete old image when replacing by updating the file """
+        try:
+            this = PortfolioImage.objects.get(id=self.id)
+            if this.image != self.image:
+                this.image.delete(save=False)
+        except PortfolioImage.DoesNotExist:
+            pass  # When new photo then we do nothing, normal case
+        super(PortfolioImage, self).save(*args, **kwargs)
+
+
+@receiver(pre_delete, sender=PortfolioImage)
+def portfolio_image_delete(sender, instance, **kwargs):
+    """ delete image when remove object from admin panel """
+    instance.image.delete(False)
