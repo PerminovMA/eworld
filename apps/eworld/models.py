@@ -34,3 +34,25 @@ class Attach(models.Model):
 def attach_file_delete(sender, instance, **kwargs):
     """ delete image when remove object from admin panel """
     instance.file.delete(False)
+
+
+class FaqSection(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __unicode__(self):
+        return self.name
+
+
+class Faq(models.Model):
+    section = models.ForeignKey(FaqSection)
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+    video = models.TextField(help_text="iFrame", null=True, blank=True)
+
+    @property
+    def short_description(self):
+        from django.template.defaultfilters import truncatechars
+        return truncatechars(self.description, 100)
+
+    def __unicode__(self):
+        return self.name
