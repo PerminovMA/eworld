@@ -1,9 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import HttpResponse, render
 
 
 def user_registration(request):
-    pass
+    context = {}
+    return render(request, 'profiles/registration.html', context)
 
 
 def user_authorization(request):
-    pass
+    return HttpResponse("user_authorization")
