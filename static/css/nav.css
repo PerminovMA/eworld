@@ -1,0 +1,243 @@
+
+.bt-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 70px;
+    height: 100%;
+    background-color: rgba(0,0,0,0);
+}
+.bt-menu .navbar-outer{
+    z-index: 1;
+    height: 0;
+    position: absolute;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    /*visibility: hidden;*/
+    -webkit-transition: width 0.3s, background-color 0.3s, height 0s 0.3s;
+    transition: width 0.3s, background-color 0.3s, height 0s 0.3s;
+    background-color: rgba(0,0,0,0.5);
+}
+/*
+.bt-menu.bt-menu-open {
+    height: 100%;
+    border-width: 0 0 0 150px;
+    background-color: rgba(0,0,0,0.3);
+    -webkit-transition: border-width 0.3s, background-color 0.3s;
+    transition: border-width 0.3s, background-color 0.3s;
+}*/
+
+.bt-menu.bt-menu-open .navbar-outer{
+    height: 100%;
+    width: 190px;
+    border-width: 0;
+    /*visibility: visible;*/
+    background-color: rgba(0,0,0,0.9);
+    -webkit-transition: width 0.3s, background-color 0.3s;
+    transition: width 0.3s, background-color 0.3s;
+}
+
+.bt-overlay {
+    /*position: absolute;
+    width: 100%;*/
+}
+
+.bt-menu-open .bt-overlay {
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    background-color: rgba(0,0,0,.3);
+}
+
+.bt-menu-trigger {
+    position: fixed;
+    top: 85px;
+    left: 20px;
+    display: block;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.bt-menu-trigger span {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    display: block;
+    width: 100%;
+    height: 3px;
+    margin-top: -2px;
+    font-size: 0;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-transition: background-color 0.3s;
+    transition: background-color 0.3s;
+}
+
+.bt-menu-open .bt-menu-trigger span {
+    background-color: transparent !important;
+}
+
+.bt-menu-trigger span:before,
+.bt-menu-trigger span:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    -webkit-transition: -webkit-transform 0.3s;
+    transition: transform 0.3s;
+}
+
+.bt-menu-trigger span:before {
+    -webkit-transform: translateY(-250%);
+    transform: translateY(-250%);
+}
+
+.bt-menu-trigger span:after {
+    -webkit-transform: translateY(250%);
+    transform: translateY(250%);
+}
+
+.bt-menu-open .bt-menu-trigger span:before {
+    -webkit-transform: translateY(0) rotate(45deg);
+    transform: translateY(0) rotate(45deg);
+}
+
+.bt-menu-open .bt-menu-trigger span:after {
+    -webkit-transform: translateY(0) rotate(-45deg);
+    transform: translateY(0) rotate(-45deg);
+}
+
+.bt-message{
+    position: fixed;
+    width: 70px;
+    height: 50px;
+    top: 135px;
+    left: 0;
+    display: block;
+    z-index: 2;
+    opacity: .7;
+}
+.bt-message:hover{
+    opacity: 1;
+}
+.bt-message:before{
+    content: '';
+    width: 70px;
+    height: 50px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 35px;
+    display: block;
+}
+.bt-message span{
+    position: absolute;
+    left: 15px;
+    top: 10px;
+    width: 20px;
+    height: 20px;
+    line-height: 21px;
+    border-radius: 50%;
+    text-align: center;
+    font-size: .7em;
+    color: #FFF;
+    background-color: #CC0000;
+}
+.bt-menu-open .bt-message{
+    display: none;
+}
+
+.bt-menu ul {
+    position: fixed;
+    top: 125px;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    width: 150px;
+    list-style: none;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+.bt-menu ul li{
+    padding: 0 0 0 20px;
+}
+.bt-menu ul li,
+.bt-menu ul li a {
+    display: block;
+    width: 100%;
+}
+
+.bt-menu ul li {
+    padding: 0;
+    opacity: 0;
+    visibility: hidden;
+    -webkit-transition: -webkit-transform 0.3s, opacity 0.2s, visibility 0s 0.3s;
+    transition: transform 0.3s, opacity 0.2s, visibility 0s 0.3s;
+}
+
+.bt-menu ul li:first-child {
+    -webkit-transform: translate3d(-100%,200%,0);
+    transform: translate3d(-100%,200%,0);
+}
+
+.bt-menu ul li:nth-child(2) {
+    -webkit-transform: translate3d(-100%,100%,0);
+    transform: translate3d(-100%,100%,0);
+}
+
+.bt-menu ul li:nth-child(3) {
+    -webkit-transform: translate3d(-100%,0,0);
+    transform: translate3d(-100%,0,0);
+}
+
+.bt-menu ul li:nth-child(4) {
+    -webkit-transform: translate3d(-100%,-100%,0);
+    transform: translate3d(-100%,-100%,0);
+}
+
+.bt-menu ul li:nth-child(5) {
+    -webkit-transform: translate3d(-100%,-200%,0);
+    transform: translate3d(-100%,-200%,0);
+}
+
+.bt-menu.bt-menu-open ul li {
+    visibility: visible;
+    opacity: 1;
+    -webkit-transition: -webkit-transform 0.3s, opacity 0.3s 0.1s;
+    transition: transform 0.3s, opacity 0.3s;
+    -webkit-transform: translate3d(0,0,0);
+    transform: translate3d(0,0,0);
+}
+
+.bt-menu ul li a {
+    display: block;
+    outline: none;
+    padding: 1.5em;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: .85em;
+    letter-spacing: .03em;
+    font-weight: 100;
+}
+.bt-menu.navbar-inverse ul li a {
+    color: #FFF;
+}
+
+.bt-menu ul li a:before {
+    color: #04a466;
+    font-size: 48px;
+    -webkit-transition: color 0.2s;
+    transition: color 0.2s;
+}
+
+.bt-menu ul li a:hover:before,
+.bt-menu ul li a:focus:before  {
+    color: #fff;
+}

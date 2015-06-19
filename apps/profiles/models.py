@@ -34,7 +34,7 @@ class UserProfile(AbstractUser):
     cities = models.ManyToManyField(City)
     about_me = models.TextField(null=True, blank=True)
     avatar = models.ImageField(null=True, blank=True, upload_to=get_upload_avatar_path)
-    AbstractUser._meta.get_field('email')._unique=True  # Make email field unique
+    AbstractUser._meta.get_field('email')._unique = True  # Make email field unique
 
     @property
     def is_client(self):
