@@ -16,10 +16,12 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from profiles import urls as profiles_urls
+from eworld import urls as eworld_urls
 from django.conf.urls.static import static
 from django.conf import settings
 
 urlpatterns = [
+    url(r'^$', include(eworld_urls, namespace='eworld')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^profile/', include(profiles_urls, namespace='profile')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)  # Only for development (not production).

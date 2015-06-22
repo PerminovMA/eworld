@@ -37,6 +37,10 @@
     background: rgba(0, 0, 0, 0);
     box-shadow: none;
 }
+.modal-content form{
+    width: 70%;
+    margin: 0 auto;
+}
 .modal-footer .btn{
     border: 1px solid;
 }
@@ -142,7 +146,7 @@
     background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPjxzdmcgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiIHdpZHRoPSI5MC4yMnB4IiBoZWlnaHQ9IjE1NC4zMnB4IiB2aWV3Qm94PSIwIDAgOTAuMjIgMTU0LjMyIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCA5MC4yMiAxNTQuMzIiIHhtbDpzcGFjZT0icHJlc2VydmUiPjxwb2x5bGluZSBmaWxsPSJub25lIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBwb2ludHM9IjkwLjIyLDAgMTMuMDYsNzcuMTYgOTAuMjIsMTU0LjMyICIvPjwvc3ZnPg==);
 }
 .nav>li>a{
-    padding: 15px;
+    /*padding: 15px;*/
 }
 .dropdown-menu{
     /*
@@ -171,6 +175,8 @@
     color: #FFF;
     font-weight: 100;
 }
+.btn-outline:focus,
+.btn-outline:active,
 .btn-outline:hover{
     color: #563D7C;
     background-color: #FFF;
@@ -347,6 +353,9 @@ body{
     z-index: 5;
     left: 0;
     top:0;
+}
+.home #masthead_container{
+    border-right: 0;
 }
 #masthead nav .dropdown-menu{
     position: absolute;
@@ -826,7 +835,7 @@ section#bg{
     height: 100%;
     display: block;
     position: fixed;
-    background-image: url("images/hero_unsplash.jpg");
+    background-image: url("/static/images/hero_unsplash.jpg");
     background-attachment: fixed;
     background-position: top center;
     background-repeat: no-repeat;
@@ -1360,18 +1369,22 @@ section#content aside.info-block.well h4{
 
 /* =Lists and Items ========================================================================================= */
 .single-project article,
+.single-faq article,
 .comment-form,
 .comment-list,
 .project-list{
     padding: 1em 2em;
 }
 .single-project article.collapse,
-.single-project article.collapsing{
+.single-project article.collapsing,
+.single-faq article.collapse,
+.single-faq article.collapsing{
     padding-top: 0;
     margin-top: -2em;
 }
 .comment-form form,
 .single-project article .single-content,
+.single-faq article .single-content,
 .comment-item,
 .response-item,
 .project-item{
@@ -1518,16 +1531,19 @@ aside.meta a{
     min-height: 120px;
 }
 
+.single-faq article .single-content,
 .single-project article .single-content,
 .single-project .comment-form form,
 section#content.single-project > header .description,
+section#content.single-faq > header .description,
 .single-project .comment-item,
 .single-project .response-item{
     padding-left: 70px;
     position: relative;
 }
 
-section#content.single-project > header .description{
+section#content.single-project > header .description,
+section#content.single-faq > header .description{
     margin-top: 30px;
 }
 
@@ -1558,6 +1574,20 @@ section#content.single-project > header .description{
     top: -30%;
     height: 130%;
 }
+
+/* =Single FAQ ---------------------------------------------------------------------- */
+
+.single-faq .panel-heading{
+    padding: 0;
+}
+.single-faq .btn-more{
+    display: block;
+    text-align: left;
+}
+
+
+
+
 
 #calendar_wrapper{
     padding: 0 2em;
@@ -1624,11 +1654,6 @@ section#content.single-project > header .description{
 .fc-other-month{
     background-color: transparent;
 }
-
-/*.fc-event-width-overirde{width: 50px !important;}*/
-
-
-
 
 
 @media (max-width: 767px) {
@@ -1798,7 +1823,7 @@ section#content.single-project > header .description{
     }
 
     #hero{
-        background-image: url("images/hero_unsplash_sm_xs.jpg");
+        background-image: url("/static/images/hero_unsplash_sm_xs.jpg");
 
         background-position: top center;
         background-repeat: no-repeat;
@@ -1872,12 +1897,14 @@ section#content.single-project > header .description{
     }
 
     .single-project article,
+    .single-faq article,
     .comment-form,
     .comment-list,
     .project-list{
         padding: 1em 5px;
     }
-    .single-project article .single-content{
+    .single-project article .single-content,
+    .single-faq article .single-content{
         padding: 2em 1em 2em 20px;
         font-size: 1.2em;
     }
@@ -1927,7 +1954,7 @@ section#content.single-project > header .description{
     }
 
     #hero{
-        background-image: url("images/hero_unsplash_sm_xs.jpg");
+        background-image: url("/static/images/hero_unsplash_sm_xs.jpg");
         background-position: top center;
         background-repeat: no-repeat;
         background-size: cover;
@@ -2023,7 +2050,7 @@ section#content.single-project > header .description{
 
 
     #hero{
-        background-image: url("images/hero_unsplash_sm_xs.jpg");
+        background-image: url("/static/images/hero_unsplash_sm_xs.jpg");
         background-position: top center;
         background-repeat: no-repeat;
         background-size: cover;
@@ -2034,7 +2061,7 @@ section#content.single-project > header .description{
     /*
         section#bg {
             display: table;
-            background-image: url("images/hero_unsplash.jpg");
+            background-image: url("/static/images/hero_unsplash.jpg");
             background-attachment: fixed;
             background-position: top center;
             background-repeat: no-repeat;

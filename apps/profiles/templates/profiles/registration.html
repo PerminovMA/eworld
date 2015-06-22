@@ -1,4 +1,4 @@
-{% load staticfiles %}
+{% load staticfiles extra_filters %}
 
 <!DOCTYPE html>
 <html>
@@ -123,38 +123,18 @@
         </header>
         <div class="page-content col-lg-7 col-md-9 col-sm-10 col-xs-12">
         <form method="POST" class="" action="{% url 'profile:registration' %}"> {% csrf_token %}
-            {{ form }}
-            http://djbook.ru/rel1.8/topics/forms/index.html
-            <!--<div class="form-group form-group-lg">
-                <label for="inputFirstName" class="sr-only control-label">Имя</label>
-                <input type="text" class="form-control" id="inputFirstName" placeholder="Имя">
-            </div>
-            <div class="form-group form-group-lg">
-                <label for="inputLastName" class="sr-only control-label">Фамилия</label>
-                <input type="text" class="form-control" id="inputLastName" placeholder="Фамилия">
-            </div>
-            <div class="form-group form-group-lg">
-                <label for="inputEmail" class="sr-only control-label">Email</label>
-                <input type="email" class="form-control" id="inputEmail" placeholder="Email">
-            </div>
-            <div class="form-group form-group-lg">
-                <label for="inputPhone" class="sr-only control-label">Телефон</label>
-                <input type="text" class="form-control" id="inputPhone" placeholder="Телефон">
-            </div>
-            <div class="row form-group">
-            <div class="col-lg-6 col-md-6 col-sm-6 form-group-lg">
-                <label for="inputPassword3" class="sr-only control-label">Пароль</label>
-                <div class="">
-                    <input type="password" class="form-control" id="inputPassword3" placeholder="Пароль">
+            {% for field in form %}
+                <div class="form-group form-group-lg">
+                    <label for="{{ field.id_for_label }}">{{ field.errors }}</label>
+                    <input value="{% if field.value %}{{ field.value }}{% endif %}" type="{{ field|get_field_type }}" class="form-control" name="{{ field.name }}" id="{{ field.id_for_label }}" placeholder="{{ field.help_text }}">
                 </div>
-            </div>
-                <div class="col-lg-6 col-md-6 col-sm-6 form-group-lg">
+            {% endfor %}
+
+            <div class="form-group form-group-lg">
                 <label for="inputPasswordConfirm" class="sr-only control-label">Подтвердите пароль</label>
-                <div class="">
-                    <input type="password" class="form-control" id="inputPasswordConfirm" placeholder="Подтвердите пароль">
-                </div>
+                <input type="Password" class="form-control" id="inputPasswordConfirm" placeholder="Подтвердите пароль">
             </div>
-            </div>
+
             <div class="form-group form-group-lg">
                 <div class="checkbox">
                     <label>
@@ -162,10 +142,11 @@
                         Я принимаю <a href="#" data-toggle="modal" data-target="#myOffer">Договор Оферты</a>
                     </label>
                 </div>
-            </div> -->
+            </div>
+
             <div class="form-group form-group-lg">
                 <div class="">
-                    <button type="submit" class="btn btn-default btn-lg" data-toggle="modal" data-target="#myRegisterOk">Зарегестрироваться</button>
+                    <button type="submit" class="btn btn-default btn-lg" data-toggle="modal" data-target="#myRegisterOk">Зарегистрироваться</button>
                 </div>
             </div>
         </form>

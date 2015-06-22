@@ -3,6 +3,8 @@
 __author__ = 'PerminovMA@live.ru'
 
 from django import forms
+from models import UserProfile
+from django.utils.translation import ugettext as _
 
 
 class RegistrationForm(forms.Form):
@@ -10,7 +12,26 @@ class RegistrationForm(forms.Form):
     last_name = forms.CharField(help_text="Фамилия")
     email = forms.EmailField(help_text="Электронная почта")
     phone_number = forms.CharField(max_length=15, required=False, help_text="Телефон")
-    password = forms.CharField(max_length=128, help_text="Пароль")
+    password = forms.CharField(max_length=128, help_text="Пароль", widget=forms.PasswordInput)
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        if UserProfile.objects.filter(email=email).last():
+            raise forms.ValidationError(_(u"Пользователь с такой электронной почтой уже зарегистрирован."),
+                                        code="user_already_exist")
+        return email
+
+    def clean_password(self):
+        password = self.cleaned_data['password']
+        if len(password) < 6:
+            raise forms.ValidationError(_(u"Минимальная длинна пароля 6 символов"), code="bad_password")
+        return password
+
+    def clean(self):
+        cleaned_data = super(RegistrationForm, self).clean()
+        phone_number = cleaned_data.get("phone_number")
+        if phone_number == '':
+            cleaned_data["phone_number"] = None
 
 
 class EmailAuthorizationForm(forms.Form):
