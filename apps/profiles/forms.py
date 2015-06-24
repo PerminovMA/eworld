@@ -35,5 +35,12 @@ class RegistrationForm(forms.Form):
 
 
 class EmailAuthorizationForm(forms.Form):
-    email = forms.EmailField()
-    password = forms.CharField(max_length=128)
+    email = forms.EmailField(help_text="Электронная почта")
+    password = forms.CharField(max_length=128, help_text="Пароль", widget=forms.PasswordInput)
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        if not UserProfile.objects.filter(email=email).last():
+            raise forms.ValidationError(_(u"Пользователь с такой электронной почтой не зарегистрирован."),
+                                        code="user_not_exist")
+        return email

@@ -25,13 +25,14 @@ def user_registration(request):
 def user_authorization(request):
     if request.method == "GET":
         form = EmailAuthorizationForm()
-        return render(request, 'profiles/registration.html', {"form": form})  # TODO need to change template
+        return render(request, 'profiles/authorization_modal.html', {"form": form})
     elif request.method == "POST":
         form = EmailAuthorizationForm(request.POST)
         if form.is_valid():
-            # TODO auth script
-            return HttpResponse("pass")
+            user_obj = UserProfile.objects.get(email=form.cleaned_data.get("email"))
+            # TODO add auth script
+            return render(request, 'profiles/authorization_modal.html', {"form": form})
         else:
-            return render(request, 'profiles/registration.html', {"form": form})  # TODO auth script
+            return render(request, 'profiles/authorization_modal.html', {"form": form})
     else:
         raise Http404
