@@ -24,4 +24,4 @@ urlpatterns = [
     url(r'^$', include(eworld_urls, namespace='eworld')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^profile/', include(profiles_urls, namespace='profile')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)  # Only for development (not production).
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)  # Only for development (not production).

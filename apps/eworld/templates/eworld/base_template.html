@@ -1,7 +1,7 @@
 {% load staticfiles %}
 
 <!DOCTYPE html>
-<html>
+<html ng-app="eworld_base_module">
 
 <head lang="en">
 
@@ -70,5 +70,8 @@
     <script type='text/javascript' src='{% static "js/borderMenu.js" %}'></script>
     <script type='text/javascript' src='{% static "js/slick.min.js" %}'></script>
     <script type='text/javascript' src='{% static "js/main.js" %}'></script>
+
+    <script src="{% static 'js/angularjs/1.0.6/angular.min.js' %}"></script>
+    <script src="{% static 'eworld/js/angular/eworld_module.js' %}"></script>
 {% endblock %}
 </html>
