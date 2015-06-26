@@ -8,11 +8,19 @@ from django.utils.translation import ugettext as _
 
 
 class RegistrationForm(forms.Form):
-    first_name = forms.CharField(help_text="Имя")
-    last_name = forms.CharField(help_text="Фамилия")
+    username = forms.CharField(help_text="Username", max_length=30)
+    first_name = forms.CharField(help_text="Имя", required=False)
+    last_name = forms.CharField(help_text="Фамилия", required=False)
     email = forms.EmailField(help_text="Электронная почта")
     phone_number = forms.CharField(max_length=15, required=False, help_text="Телефон")
     password = forms.CharField(max_length=128, help_text="Пароль", widget=forms.PasswordInput)
+
+    def clean_username(self):
+        username = self.cleaned_data['username']
+        if UserProfile.objects.filter(email=username).last():
+            raise forms.ValidationError(_(u"Пользователь с таким именем уже зарегистрирован."),
+                                        code="user_already_exist")
+        return username
 
     def clean_email(self):
         email = self.cleaned_data['email']

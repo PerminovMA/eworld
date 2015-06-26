@@ -10,7 +10,8 @@ def user_registration(request):
     elif request.method == "POST":
         form = RegistrationForm(request.POST)
         if form.is_valid():
-            user_obj = UserProfile(phone_number=form.cleaned_data.get("phone_number"),
+            user_obj = UserProfile(username=form.cleaned_data.get("username"),
+                                   phone_number=form.cleaned_data.get("phone_number"),
                                    email=form.cleaned_data.get("email"), first_name=form.cleaned_data.get("first_name"),
                                    last_name=form.cleaned_data.get("last_name"))
             user_obj.set_password(form.cleaned_data.get("password"))
