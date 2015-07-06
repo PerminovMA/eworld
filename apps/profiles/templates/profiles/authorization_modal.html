@@ -1,11 +1,9 @@
 {% load staticfiles extra_filters %}
 
-<html ng-app="eworld_base_module">
-
-<div class="modal-content" ng-controller="AuthorizationController">
+<div class="modal-content">
     <div class="modal-body">
 
-        <form method="POST" class="form-horizontal" ng-submit="submit()"> {% csrf_token %}
+        <form method="POST" class="form-horizontal" ng-submit="submit()" ng-controller="AuthorizationController"> {% csrf_token %}
             {% for field in form %}
                 <div class="form-group form-group-lg">
                     <label for="{{ field.id_for_label }}">{{ field.errors }}</label>
@@ -43,9 +41,8 @@
     </div>
 </div>
 
-</html>
 
-<script src="{% static 'js/angularjs/1.4.1/angular.min.js' %}"></script>
-<script src="{% static 'eworld/js/angular/eworld_module.js' %}"></script>
+{#<script src="{% static 'js/angularjs/1.4.1/angular.min.js' %}"></script>#}
+{#<script src="{% static 'eworld/js/angular/eworld_module.js' %}"></script>#}
 {#<script src="{% static 'profiles/AuthorizationController.js' %}"></script>#}
 {#<script src="{% static 'eworld/js/angular/modal_module.js' %}"></script>#}

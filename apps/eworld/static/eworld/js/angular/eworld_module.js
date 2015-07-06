@@ -5,7 +5,7 @@
 var app = angular.module('eworld_base_module', []);
 
 app.config(function ($interpolateProvider, $httpProvider) {
-    //allow django templates and angular to co-exist
+    // allow django templates and angular to co-exist
     $interpolateProvider.startSymbol('[[');
     $interpolateProvider.endSymbol(']]');
 
