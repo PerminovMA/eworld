@@ -1,7 +1,6 @@
 from django.shortcuts import HttpResponse, render, Http404
 from forms import RegistrationForm, EmailAuthorizationForm
 from models import UserProfile
-from django.views.decorators.csrf import csrf_exempt
 import json
 
 
@@ -25,7 +24,6 @@ def user_registration(request):
         raise Http404
 
 
-# @csrf_exempt
 def user_authorization(request):
     print "USER_AUTHORIZATION"
     if request.method == "GET":
@@ -33,16 +31,16 @@ def user_authorization(request):
         form = EmailAuthorizationForm()
         return render(request, 'profiles/authorization_modal.html', {"form": form})
     elif request.method == "POST":
-        form = EmailAuthorizationForm(request.POST)
-        print "POST" + str(len(request.POST))
+        request_data = json.loads(request.body)  # angular specific
+        form = EmailAuthorizationForm(request_data)
+
         if form.is_valid():
-            user_obj = UserProfile.objects.get(email=form.cleaned_data.get("email"))
+            user_obj = UserProfile.objects.get(email__iexact=form.cleaned_data.get("email"))
             print "AUTH"
             # TODO add auth script
             return render(request, 'profiles/authorization_modal.html', {"form": form})
         else:
-            print "FORM NOT VALID"
-            return HttpResponse(form.errors.as_json())
-            # return render(request, 'profiles/authorization_modal.html', {"form": form})
+            req_data = {'result': 'nok', 'errors': form.errors}
+            return HttpResponse(json.dumps(req_data))
     else:
         raise Http404

@@ -15,43 +15,35 @@ app.config(function ($interpolateProvider, $httpProvider) {
 });
 
 app.controller("IndexPageController",
-    function ($scope, $modal) {
+    function ($scope, $modal, URLs) {
         $scope.open_auth_modal = function () {
             var modalInstance = $modal.open({
-                // animation: $scope.animationsEnabled,
-                templateUrl: 'profile/authorization',
+                templateUrl: URLs.authorization,
                 controller: 'AuthorizationController'
-                // size: size
             });
         }
     }
 );
 
-
 app.controller(
     "AuthorizationController",
     function ($scope, $http, $modalInstance, URLs) {
-        //$scope.namee = items;
-
-        $scope.testFunction = function () {
-            alert(URLs.authorization);
-        }
-
+        $scope.form_errors = [];
         $scope.submit = function () {
-            $http({method: "POST", url: URLs.authorization, params: {email: $scope.email, password: $scope.password}}).
+            $scope.form_errors = [];
+            $http({method: "POST", url: URLs.authorization, data: {email: $scope.email, password: $scope.password}}).
                 success(function (data, status) {
-                    $scope.status = status;
-                    $scope.data = data;
-                    console.log("SUCCESS");
-                    console.log(status);
-                    console.log(data);
+                    if (data.result === 'nok') {
+                        for (var error_field_name in data.errors) {
+                            $scope[error_field_name + "_error_status"] = data.errors[error_field_name][0];
+                            $scope.form_errors.push(data.errors[error_field_name][0]);
+                        }
+                    } else if (data.result == 'ok') {
+                        alert("REDIRECT");
+                    }
                 }).
                 error(function (data, status) {
-                    $scope.data = data || "Request failed";
-                    $scope.status = status;
-                    console.log("ERROR");
-                    console.log(status + " " + data);
-
+                    alert("Произошла ошибка. Обратитесь к администратору. Status: " + status);
                 });
         };
 

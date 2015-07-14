@@ -48,7 +48,7 @@ class EmailAuthorizationForm(forms.Form):
 
     def clean_email(self):
         email = self.cleaned_data['email']
-        if not UserProfile.objects.filter(email=email).last():
+        if not UserProfile.objects.filter(email__iexact=email).last():
             raise forms.ValidationError(_(u"Пользователь с такой электронной почтой не зарегистрирован."),
                                         code="user_not_exist")
         return email
