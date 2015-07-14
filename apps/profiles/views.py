@@ -2,6 +2,7 @@ from django.shortcuts import HttpResponse, render, Http404
 from forms import RegistrationForm, EmailAuthorizationForm
 from models import UserProfile
 from django.views.decorators.csrf import csrf_exempt
+import json
 
 
 def user_registration(request):
@@ -33,6 +34,7 @@ def user_authorization(request):
         return render(request, 'profiles/authorization_modal.html', {"form": form})
     elif request.method == "POST":
         form = EmailAuthorizationForm(request.POST)
+        print "POST" + str(len(request.POST))
         if form.is_valid():
             user_obj = UserProfile.objects.get(email=form.cleaned_data.get("email"))
             print "AUTH"
@@ -40,6 +42,7 @@ def user_authorization(request):
             return render(request, 'profiles/authorization_modal.html', {"form": form})
         else:
             print "FORM NOT VALID"
-            return render(request, 'profiles/authorization_modal.html', {"form": form})
+            return HttpResponse(form.errors.as_json())
+            # return render(request, 'profiles/authorization_modal.html', {"form": form})
     else:
         raise Http404

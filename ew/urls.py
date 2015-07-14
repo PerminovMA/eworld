@@ -19,9 +19,12 @@ from profiles import urls as profiles_urls
 from eworld import urls as eworld_urls
 from django.conf.urls.static import static
 from django.conf import settings
+from django.views.generic import TemplateView
 
 urlpatterns = [
     url(r'^$', include(eworld_urls, namespace='eworld')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^profile/', include(profiles_urls, namespace='profile')),
+    url(r'^angular_urls_config$', TemplateView.as_view(template_name='eworld/js/urls_config.js'),
+        name='angular_urls_config'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)  # Only for development (not production).
