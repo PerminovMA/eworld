@@ -110,6 +110,10 @@ STATICFILES_DIRS = (
 MEDIA_URL = '/media/'
 
 AUTH_USER_MODEL = 'profiles.UserProfile'
+AUTHENTICATION_BACKENDS = (
+    'profiles.custom_auth_backends.EmailOrUsernameModelBackend',
+    'django.contrib.auth.backends.ModelBackend'
+)
 
 MEDIA_ROOT = ''.join((BASE_DIR, '/media/'))
 COUNT_FOLDERS = 9  # Count folders for distributed file storage

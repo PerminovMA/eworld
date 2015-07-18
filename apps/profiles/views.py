@@ -2,6 +2,8 @@ from django.shortcuts import HttpResponse, render, Http404
 from forms import RegistrationForm, EmailAuthorizationForm
 from models import UserProfile
 import json
+from django import forms
+from django.contrib.auth import authenticate, login, logout
 
 
 def user_registration(request):
@@ -25,9 +27,10 @@ def user_registration(request):
 
 
 def user_authorization(request):
-    print "USER_AUTHORIZATION"
+    if request.user.is_authenticated():
+        pass  # redirect to success page
+
     if request.method == "GET":
-        print "USER_AUTHORIZATION GET"
         form = EmailAuthorizationForm()
         return render(request, 'profiles/authorization_modal.html', {"form": form})
     elif request.method == "POST":
@@ -35,12 +38,20 @@ def user_authorization(request):
         form = EmailAuthorizationForm(request_data)
 
         if form.is_valid():
-            user_obj = UserProfile.objects.get(email__iexact=form.cleaned_data.get("email"))
-            print "AUTH"
-            # TODO add auth script
-            return render(request, 'profiles/authorization_modal.html', {"form": form})
-        else:
-            req_data = {'result': 'nok', 'errors': form.errors}
-            return HttpResponse(json.dumps(req_data))
+            email = form.cleaned_data.get("email")
+            password = form.cleaned_data.get("password")
+
+            user = authenticate(username=email, password=password)
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    # TODO redirect to success page
+                    return HttpResponse(json.dumps({'result': 'ok', 'redirect_url': '123'}))
+                    # return render(request, 'profiles/authorization_modal.html', {"form": form})
+
+            form.add_error("password", forms.ValidationError('Email or password not valid'))
+
+        req_data = {'result': 'nok', 'errors': form.errors}
+        return HttpResponse(json.dumps(req_data))
     else:
         raise Http404
