@@ -9,6 +9,7 @@ app.config(function ($interpolateProvider, $httpProvider) {
     $interpolateProvider.startSymbol('[[');
     $interpolateProvider.endSymbol(']]');
 
+    // for meeting the django POST requests security requirements
     $httpProvider.defaults.xsrfCookieName = 'csrftoken';
     $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
     $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
@@ -39,7 +40,7 @@ app.controller(
                             $scope.form_errors.push(data.errors[error_field_name][0]);
                         }
                     } else if (data.result == 'ok') {
-                        alert("REDIRECT");
+                        window.location.replace(data.redirect_url);
                     }
                 }).
                 error(function (data, status) {

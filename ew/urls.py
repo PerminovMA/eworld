@@ -22,7 +22,8 @@ from django.conf import settings
 from django.views.generic import TemplateView
 
 urlpatterns = [
-    url(r'^$', include(eworld_urls, namespace='eworld')),
+    url(r'^$', TemplateView.as_view(template_name='eworld/index.html'), name='index'),
+    url(r'^eworld/', include(eworld_urls, namespace='eworld')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^profile/', include(profiles_urls, namespace='profile')),
     url(r'^angular_urls_config$', TemplateView.as_view(template_name='eworld/js/urls_config.js'),

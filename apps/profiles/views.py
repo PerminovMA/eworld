@@ -3,6 +3,7 @@ from forms import RegistrationForm, EmailAuthorizationForm
 from models import UserProfile
 import json
 from django import forms
+from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate, login, logout
 
 
@@ -45,9 +46,7 @@ def user_authorization(request):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    # TODO redirect to success page
-                    return HttpResponse(json.dumps({'result': 'ok', 'redirect_url': '123'}))
-                    # return render(request, 'profiles/authorization_modal.html', {"form": form})
+                    return HttpResponse(json.dumps({'result': 'ok', 'redirect_url': reverse('eworld:dashboard')}))
 
             form.add_error("password", forms.ValidationError('Email or password not valid'))
 
@@ -55,3 +54,8 @@ def user_authorization(request):
         return HttpResponse(json.dumps(req_data))
     else:
         raise Http404
+
+
+def logout(request):
+    logout(request)
+    return HttpResponse('logout')

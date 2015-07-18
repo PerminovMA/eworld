@@ -1,0 +1,69 @@
+{% extends "eworld/base_template.html" %}
+{% load staticfiles %}
+
+{% block body %}
+    <div class="dashboard">
+        <div class="container-fluid">
+
+            <main id="page">
+                {% block menu %}
+                    {{ block.super }}
+                {% endblock %}
+
+                <section id="profile" class="">
+                        <header>
+                            <div class="cover-overlay" style="background-image: url({% static 'images/gold_gate.jpeg' %}?dpr=2&fit=crop&fm=jpg&h=600&q=75&w=700)"></div>
+                            <a href="#" class="avatar add_avatar ew-icon-organizer"></a>
+                            <button type="button" class="navbar-toggle collapsed ew-icon-open-sub" data-toggle="collapse" data-target="#profile_menu"></button>
+                            <h1>{{ user.first_name }} {{ user.last_name }}</h1>
+                            <ul class="rating">
+                                <li class="on"></li>
+                                <li class="on"></li>
+                                <li class="on"></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                            </ul>
+                        </header>
+                        <ul class="statistic row">
+                            <li class="col-lg-4 col-md-4 col-sm-12"><span>171</span>просмотры</li>
+                            <li class="col-lg-4 col-md-4 col-sm-12"><span class="cash">5,00</span>баланс</li>
+                            <li class="col-lg-4 col-md-4 col-sm-12"><span>3,7</span>рейтинг</li>
+                        </ul>
+                        <nav id="profile_menu" class="collapse navbar-collapse">
+                            <ul class="nav nav-pills nav-stacked nav-icons">
+                                <li><a href="#" class="ew-icon-organizer">Моё резюме</a></li>
+                                <li><a href="#" class="ew-icon-reduction">Мои аукционы</a></li>
+                                <li><a href="#" class="ew-icon-project">Заказы</a></li>
+                                <li><a href="#" class="ew-icon-calendar">Календарь занятости</a></li>
+                            </ul>
+                        </nav>
+                </section>
+
+                <section id="content" class="">
+                    <header class="clearfix">
+                        <h1 class="ew-icon-organizer">Консоль</h1>
+                        <div class="description col-lg-7 col-md-9">
+                        <p>Minimalist posters are encouraging us to be design idiots.</p>
+                        <p>A central tenet of good design is that it shouldn't be any more complicated than it needs to be, but that doesn't mean good design is inherently uncomplicated.</p>
+                        </div>
+                    </header>
+
+                    <ul class="capabilities_entries row" style="color: #362359; text-align: center;">
+                        <li class="col-md-3 col-sm-6 col-xs-6 capabilities_item"><h4 class="ew-icon-organizer" >Моё резюме</h4></li>
+                        <li class="col-md-3 col-sm-6 col-xs-6 capabilities_item"><h4 class="ew-icon-project">Заказы</h4></li>
+                        <li class="col-md-3 col-sm-6 col-xs-6 capabilities_item"><h4 class="ew-icon-reduction">Мои аукционы</h4></li>
+                        <li class="col-md-3 col-sm-6 col-xs-6 capabilities_item"><h4 class="ew-icon-faq">FAQ</h4></li>
+                    </ul>
+                </section>
+
+            </main>
+
+        </div>
+    </div>
+
+{% endblock %}
