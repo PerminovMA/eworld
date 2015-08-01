@@ -84,12 +84,12 @@
     /*= END Repeatable inputs ======================================= */
 
 
-    $('.nav').on('show.bs.dropdown', function () {
-        console.log(' do something…');
-    });
-    $('.nav').on('shown.bs.dropdown', function () {
-        console.log(' do something…');
-    });
+    //$('.nav').on('show.bs.dropdown', function () {
+    //    console.log(' do something…');
+    //});
+    //$('.nav').on('shown.bs.dropdown', function () {
+    //    console.log(' do something…');
+    //});
 
     $('.dropdown-select').on('click', 'a', function(e){
         $(this).closest('ul').find('li.active').removeClass('active');

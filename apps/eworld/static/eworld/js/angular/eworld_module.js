@@ -2,7 +2,7 @@
  * Created by PerminovMA@live.ru on 26.06.15.
  */
 
-var app = angular.module('eworld_base_module', ['ui.bootstrap']);
+var app = angular.module('eworld_base_module', ['ui.bootstrap', 'ngResource']);
 
 app.config(function ($interpolateProvider, $httpProvider) {
     // allow django templates and angular to co-exist

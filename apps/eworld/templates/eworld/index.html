@@ -77,18 +77,12 @@
                 </div>
                 <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12 col-lg-pull-2 col-md-pull-2 text-right">
 
-                <a href="{% url 'profile:registration' %}" class="btn btn-outline btn-lg inverse">Регистрация</a>
-{#                <a href="{% url 'profile:authorization' %}" class="btn btn-outline btn-lg inverse" ng-click="open()" data-toggle="modal" data-target="#login_modal" >Вход</a>#}
-                <button class="btn btn-outline btn-lg inverse" ng-click="open_auth_modal()">Вход</button>
-
-{#                <!-- Modal HTML -->#}
-{#                <div class="modal fade" id="login_modal" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="true">#}
-{#                    <div class="modal-dialog">#}
-{#                        <div class="modal-content">#}
-{#                            <!-- Content will be loaded here from "profile:authorization" url-->#}
-{#                        </div>#}
-{#                    </div>#}
-{#                </div>#}
+                {% if not user.is_authenticated %}
+                    <a href="{% url 'profile:registration' %}" class="btn btn-outline btn-lg inverse">Регистрация</a>
+                    <button class="btn btn-outline btn-lg inverse" ng-click="open_auth_modal()">Вход</button>
+                {% else %}
+                    <a href="{% url 'eworld:dashboard' %}" class="btn btn-outline btn-lg inverse">Вход</a>
+                {% endif %}
 
                 <ul class="social nav nav-pills">
                     <li><a href="#" class="brandico-twitter-bird"></a></li>

@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'events',
     'eworld',
     'django_extensions',
+    'rest_framework',
 )
 
 MIDDLEWARE_CLASSES = (
