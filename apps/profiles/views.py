@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django.shortcuts import HttpResponse, render, Http404
 from forms import RegistrationForm, EmailAuthorizationForm
 from models import UserProfile
@@ -5,6 +7,7 @@ import json
 from django import forms
 from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate, login, logout
+from django.http import HttpResponseRedirect
 
 
 def user_registration(request):
@@ -20,7 +23,14 @@ def user_registration(request):
                                    last_name=form.cleaned_data.get("last_name"))
             user_obj.set_password(form.cleaned_data.get("password"))
             user_obj.save()
-            return HttpResponse(str("USER CREATED!"))  # TODO render to some page
+
+            user = authenticate(username=user_obj.email, password=form.cleaned_data.get("password"))
+
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    return HttpResponseRedirect(reverse('eworld:dashboard'))
+            return HttpResponse(u"Произошла ошибка. Пожалуйста, обратитесь к администратору.")
         else:
             return render(request, 'profiles/registration.html', {"form": form})
     else:

@@ -38,7 +38,7 @@
     {% block menu %}
         <header id="masthead" class="">
             <div id="masthead_container" class="">
-            <a id="the_logo" href="#" class="ew-icon-logo"></a>
+            <a id="the_logo" href="{% url 'index' %}" class="ew-icon-logo"></a>
             <nav id="bt-menu" class="bt-menu navbar-inverse">
                 <a href="#" class="bt-menu-trigger"><span>Menu</span></a>
                 <a href="#" class="bt-message ew-icon-message"><span>3</span></a>
@@ -77,6 +77,7 @@
     <script src="{% static 'js/angularjs/1.4.1/angular.min.js' %}"></script>
     <script src="{% static 'js/angularjs/1.4.1/angular-resource.min.js' %}"></script>
     <script src="{% static 'js/angularjs/angular-ui/0.13.0/ui-bootstrap-tpls.min.js' %}"></script>
+    <script src="{% static 'eworld/js/angular/eworld_filters.js' %}"></script>
     <script src="{% static 'eworld/js/angular/eworld_module.js' %}"></script>
     <script src="{% url 'angular_urls_config' %}"></script>
 {% endblock %}

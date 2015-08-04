@@ -6,7 +6,7 @@ from events.rest_api.api_router import router
 
 urlpatterns = patterns('',
                        url(r'dashboard', TemplateView.as_view(template_name='eworld/dashboard.html'), name='dashboard'),
-                       url(r'auctions_list', TemplateView.as_view(template_name='eworld/auctions_list.html'), name='auctions_list'),
-                       url(r'rest_api/', include(router.urls)),
-                       # url(r'rest_api', include('events.rest_api.api_router', namespace='rest_api', app_name='eworld')),
+                       url(r'auctions_list', TemplateView.as_view(template_name='eworld/auctions_list.html'),
+                           name='auctions_list'),
+                       url(r'rest_api/', include(router.urls, namespace='rest_api_urls')),
                        )

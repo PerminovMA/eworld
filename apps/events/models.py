@@ -14,7 +14,7 @@ def get_upload_category_icon_path(instance, filename):
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=20)
+    name = models.CharField(max_length=30)
     icon = models.ImageField(upload_to=get_upload_category_icon_path)
     order_percent = models.DecimalField(max_digits=6, decimal_places=2)
     auction_percent = models.DecimalField(max_digits=6, decimal_places=2)
