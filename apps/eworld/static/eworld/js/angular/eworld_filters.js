@@ -15,8 +15,6 @@ filterModule.filter('moneyFormatter', function () {
                 if (i % 3 === 0) {
                     var insert_pos = saved_length - i;
 
-                    console.log(insert_pos);
-
                     if (insert_pos < saved_length) {
                         input = input.slice(0, insert_pos) + ' ' + input.slice(insert_pos);
                     }

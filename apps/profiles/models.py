@@ -38,10 +38,7 @@ class UserProfile(AbstractUser):
 
     @property
     def is_client(self):
-        try:
-            return self.client is not None
-        except Client.DoesNotExist:
-            return False
+        return hasattr(self, 'client')
 
     @property
     def is_event_manager(self):

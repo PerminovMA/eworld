@@ -12,6 +12,13 @@ class AuctionOrderView(viewsets.ReadOnlyModelViewSet):
     permission_classes = (permissions.IsAuthenticated,)
 
     def get_queryset(self):
+        get_only_my_auctions = self.request.GET.get('get_only_my_auctions')
+        if get_only_my_auctions and get_only_my_auctions == 'true':
+            if self.request.user.is_client:
+                return self.request.user.client.auctionorder_set.all()
+            else:
+                return []
+
         selected_order_type_id = self.request.GET.get('selectedOrderType')
         sort_order = self.request.GET.get('sortOrder')
         selected_city = self.request.GET.get('selectedCity')

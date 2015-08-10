@@ -15,15 +15,19 @@ app.controller("AuctionsListController",
                 $scope.selectedOrderType = null;
             }
 
-            AuctionsService.query({sortOrder: $scope.sortOrder, selectedOrderType: $scope.selectedOrderType,
-                selectedCity: $scope.selectedCity},
-                function(data) {
+            AuctionsService.query(
+                {
+                    sortOrder: $scope.sortOrder, selectedOrderType: $scope.selectedOrderType,
+                    selectedCity: $scope.selectedCity
+                },
+                function (data) {
                     $scope.auctions = data;
                 },
-                function(err_obj){
+                function (err_obj) {
                     alert("Произошла ошибка при получении списка аукционов. Пожалуйста, попробуйте позже.")
-                });
-        }
+                }
+            );
+        };
 
         $scope.setOrderTypeSelected = function(orderType) {
             if (orderType != null) {  // not selected all types
@@ -33,7 +37,7 @@ app.controller("AuctionsListController",
                 $scope.selectedOrderType = null;
             }
             $scope.getAuctionsList();
-        }
+        };
 
         $scope.getAuctionsList();
     }
