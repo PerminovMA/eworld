@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block body %}
-    <div class="dashboard" xmlns="http://www.w3.org/1999/html" ng-controller="AuctionsListController">
+    <div class="dashboard" xmlns="http://www.w3.org/1999/html" ng-controller="MyOrdersListController">
     <div class="container-fluid">
 
         <main id="page">
@@ -37,13 +37,13 @@
                 <ul class="statistic row">
                     <li class="col-lg-4 col-md-4 col-sm-12"><span>171</span>просмотры</li>
                     <li class="col-lg-4 col-md-4 col-sm-12"><span class="cash">5,00</span>баланс</li>
-                    <li class="col-lg-4 col-md-4 col-sm-12"><span>3,7</span>рейтинг</li>
+                    <li class="col-lg-4 col-md-4 col-sm-12"><span>3,8</span>рейтинг</li>
                 </ul>
                 <nav id="profile_menu" class="collapse navbar-collapse">
                     <ul class="nav nav-pills nav-stacked nav-icons">
                         <li><a href="#" class="ew-icon-organizer">Моё резюме</a></li>
-                        <li><a href="{% url 'eworld:my_auctions_list' %}" class="ew-icon-reduction">Мои аукционы</a></li>
                         <li><a href="{% url 'eworld:orders_list' %}" class="ew-icon-project">Заказы</a></li>
+                        <li><a href="{% url 'eworld:auctions_list' %}" class="ew-icon-reduction">Аукционы</a></li>
                         <li><a href="#" class="ew-icon-calendar">Каледнарь занятости</a></li>
                     </ul>
                 </nav>
@@ -51,8 +51,8 @@
 
             <section id="content">
                 <header class="clearfix">
-                    <h1 class="ew-icon-reduction">Аукционы</h1>
-                    <nav id="filter" class="navbar">
+                    <h1 class="ew-icon-project">Мои заказы</h1>
+                    <!-- <nav id="filter" class="navbar">
                         <ul class="nav navbar-nav">
                             <li class="dropdown"><a href="#" class="dropdown-toggle btn-select" data-toggle="dropdown" role="button" aria-expanded="false"><span class="label-text">Все категории</span> <span class="caret"></span></a>
                                 <div class="dropdown-menu dropdown-select">
@@ -81,7 +81,7 @@
 
                             </form>
                         </ul>
-                    </nav>
+                    </nav> -->
 
                     <div class="description col-lg-7 col-md-9">
                         <p>Minimalist posters are encouraging us to be design idiots.</p>
@@ -89,14 +89,14 @@
                     </div>
                 </header>
                 <div class="project-list">
-                    <article class="project-item" ng-repeat="auction in auctions">
+                    <article class="project-item" ng-repeat="order in orders">
                         <header>
-                            <h2><a href="/model/single-auction.html">[[auction.name]]</a></h2>
+                            <h2><a href="/model/single-auction.html">[[order.name]]</a></h2>
                         </header>
-                        <p>[[auction.description]]</p>
+                        <p>[[order.description]]</p>
                         <footer>
-                        <p class="lead price">[[auction.start_price]] руб.<sup ng-if="auction.best_bet"><span class="glyphicon glyphicon-triangle-bottom"></span> [[auction.best_bet | moneyFormatter]] руб.</sup></p>
-                            <p class="meta"><a href="#" class="user"><img src="[[auction.owner.user.avatar]]" class="avatar img-circle" />[[auction.owner.user.first_name + ' ' + auction.owner.user.last_name]], [[auction.city.name]]</a> <time>[[auction.event_date | date: 'dd.MM.yyyy h:mm']]</time><span class="preview ew-icon-eye-small">[[auction.order_views_count]]</span></p>
+                        <p class="lead price">[[order.price]] руб.</p>
+                            <p class="meta"><a href="#" class="user"><img src="[[order.owner.user.avatar]]" class="avatar img-circle" />[[order.owner.user.first_name + ' ' + order.owner.user.last_name]], [[order.city.name]]</a> <time>[[order.event_date | date: 'dd.MM.yyyy h:mm']]</time><span class="preview ew-icon-eye-small">[[order.order_views_count]]</span></p>
                         </footer>
                     </article>
 {#                    <article class="project-item">#}
@@ -171,6 +171,6 @@
 
 {% block scripts %}
     {{ block.super }}
-    <script src="{% static 'eworld/js/angular/controllers/AuctionsListController.js' %}"></script>
+    <script src="{% static 'eworld/js/angular/controllers/MyOrdersListController.js' %}"></script>
     <script src="{% static 'eworld/js/angular/services/EventsServices.js' %}"></script>
 {% endblock %}

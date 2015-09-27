@@ -12,5 +12,10 @@ urlpatterns = patterns('',
                        url(r'auctions_list', TemplateView.as_view(template_name='eworld/auctions_list.html'),
                            name='auctions_list'),
 
+                       url(r'my_orders_list', TemplateView.as_view(template_name='eworld/my_orders_list.html'),
+                           name='my_orders_list'),
+                       url(r'orders_list', TemplateView.as_view(template_name='eworld/orders_list.html'),
+                           name='orders_list'),
+
                        url(r'rest_api/', include(router.urls, namespace='rest_api_urls')),
                        )

@@ -55,7 +55,7 @@
 
                     <ul class="capabilities_entries row" style="color: #362359; text-align: center;">
                         <li class="col-md-3 col-sm-6 col-xs-6 capabilities_item"><h4 class="ew-icon-organizer" >Моё резюме</h4></li>
-                        <li class="col-md-3 col-sm-6 col-xs-6 capabilities_item"><h4 class="ew-icon-project">Заказы</h4></li>
+                        <a href="{% url 'eworld:orders_list' %}"><li class="col-md-3 col-sm-6 col-xs-6 capabilities_item"><h4 class="ew-icon-project">Заказы</h4></li></a>
                         <a href="{% url 'eworld:auctions_list' %}"><li class="col-md-3 col-sm-6 col-xs-6 capabilities_item"><h4 class="ew-icon-reduction">Аукционы</h4></li></a>
                         <li class="col-md-3 col-sm-6 col-xs-6 capabilities_item"><h4 class="ew-icon-faq">FAQ</h4></li>
                     </ul>

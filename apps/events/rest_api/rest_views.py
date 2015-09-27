@@ -1,7 +1,7 @@
 __author__ = 'PerminovMA@live.ru'
 
-from events.rest_api.serializers import AuctionOrderSerializer, CategorySerializer
-from events.models import AuctionOrder, Category
+from events.rest_api.serializers import AuctionOrderSerializer, CategorySerializer, OrderSerializer
+from events.models import AuctionOrder, Category, Order
 from rest_framework import viewsets
 from rest_framework import permissions
 import datetime
@@ -42,6 +42,23 @@ class AuctionOrderView(viewsets.ReadOnlyModelViewSet):
                 auctions_set = auctions_set.order_by('-creation_datetime')
 
         return auctions_set
+
+
+class OrderView(viewsets.ReadOnlyModelViewSet):
+    serializer_class = OrderSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+
+    # queryset = Order.objects.all()
+
+    def get_queryset(self):
+        get_only_my_orders = self.request.GET.get('get_only_my_orders')
+        if get_only_my_orders and get_only_my_orders == 'true':
+            if self.request.user.is_client:
+                return self.request.user.client.order_set.all()
+            else:
+                return []
+
+        return Order.objects.all()
 
 
 class CategoryOrderView(viewsets.ReadOnlyModelViewSet):

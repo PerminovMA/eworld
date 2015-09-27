@@ -1,19 +1,22 @@
 __author__ = 'PerminovMA@live.ru'
 
 from rest_framework import serializers
-from events.models import AuctionOrder
+from events.models import AuctionOrder, Order
 from events.models import Category
 from profiles.rest_api.serializers import ClientSerializer, CitySerializer
 
 
-class AuctionOrderSerializer(serializers.ModelSerializer):
+class BaseOrderSerializer(serializers.ModelSerializer):
+    order_views_count = serializers.SerializerMethodField('order_views_counter')
     owner = ClientSerializer()
     city = CitySerializer()
-    order_views_count = serializers.SerializerMethodField('order_views_counter')
-    best_bet = serializers.SerializerMethodField()
 
-    def order_views_counter(self, auction):
-        return auction.order_views.count()
+    def order_views_counter(self, some_order):
+        return some_order.order_views.count()
+
+
+class AuctionOrderSerializer(BaseOrderSerializer):
+    best_bet = serializers.SerializerMethodField()
 
     def get_best_bet(self, auction):
         best_bests = auction.get_best_bet()
@@ -24,7 +27,11 @@ class AuctionOrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AuctionOrder
-        # exclude = ('order_views',)
+
+
+class OrderSerializer(BaseOrderSerializer):
+    class Meta:
+        model = Order
 
 
 class CategorySerializer(serializers.ModelSerializer):

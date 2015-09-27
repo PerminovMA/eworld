@@ -64,7 +64,7 @@ class Order(BaseOrder):
                       (BaseOrder.ORDER_IN_PROCESS, 'Order in process'), (BaseOrder.ORDER_COMPLETE, 'Order complete'))
 
     status = models.CharField(choices=ORDER_STATUSES, max_length=16, default=FINDING_MANAGER)
-    price = models.DecimalField(max_digits=6, decimal_places=2)
+    price = models.DecimalField(max_digits=8, decimal_places=2)
     attaches = GenericRelation(Attach, related_query_name='order', content_type_field='content_type',
                                object_id_field='object_id')
 
@@ -80,7 +80,7 @@ class AuctionOrder(BaseOrder):
                         (MANAGER_SELECTED, 'manager_selected'), (BaseOrder.ORDER_IN_PROCESS, 'order_in_process'),
                         (BaseOrder.ORDER_COMPLETE, 'ORDER_COMPLETE'))
 
-    start_price = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
+    start_price = models.DecimalField(max_digits=8, decimal_places=2, default=0.00)
     status = models.CharField(choices=AUCTION_STATUSES, max_length=18, default=AUCTION_IN_PROCESS)
     attaches = GenericRelation(Attach, related_query_name='auction_order', content_type_field='content_type',
                                object_id_field='object_id')
