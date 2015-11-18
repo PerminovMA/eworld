@@ -96,7 +96,7 @@ class AuctionOrder(BaseOrder):
 
 class Bet(models.Model):
     auction = models.ForeignKey(AuctionOrder)
-    amount = models.DecimalField(max_digits=6, decimal_places=2)
+    amount = models.DecimalField(max_digits=11, decimal_places=2)
     owner = models.ForeignKey(EventManager)
     creation_datetime = models.DateTimeField(auto_now_add=True)
 

@@ -16,9 +16,11 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
 
 class UserProfileShortSerializer(serializers.ModelSerializer):
+    cities = CitySerializer(many=True)
+
     class Meta:
         model = UserProfile
-        fields = ('id', 'first_name', 'last_name', 'avatar')
+        fields = ('id', 'first_name', 'last_name', 'avatar', 'cities')
 
 
 class ClientSerializer(serializers.ModelSerializer):

@@ -19,3 +19,9 @@ app.factory('CategoriesService', [
         return $resource(URLs.categories_data_url, {});
     }
 ]);
+
+app.factory('BetsService', [
+    '$resource', 'URLs', function($resource, URLs) {
+        return $resource(URLs.bets_data_url, {});
+    }
+]);

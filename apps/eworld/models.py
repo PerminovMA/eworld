@@ -6,6 +6,7 @@ from django.conf import settings
 from eworld.utils import generate_filename
 from django.db.models.signals import pre_delete
 from django.dispatch.dispatcher import receiver
+import os
 
 
 def get_upload_file_path(instance, filename):
@@ -28,6 +29,9 @@ class Attach(models.Model):
         except Attach.DoesNotExist:
             pass  # When new photo then we do nothing, normal case
         super(Attach, self).save(*args, **kwargs)
+
+    def filename(self):
+        return os.path.basename(self.file.name)
 
 
 @receiver(pre_delete, sender=Attach)

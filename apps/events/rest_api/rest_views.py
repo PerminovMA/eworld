@@ -1,10 +1,11 @@
 __author__ = 'PerminovMA@live.ru'
 
-from events.rest_api.serializers import AuctionOrderSerializer, CategorySerializer, OrderSerializer
-from events.models import AuctionOrder, Category, Order
+from events.rest_api.serializers import AuctionOrderSerializer, CategorySerializer, OrderSerializer, BetSerializer
+from events.models import AuctionOrder, Category, Order, Bet
 from rest_framework import viewsets
 from rest_framework import permissions
 import datetime
+from django.shortcuts import get_object_or_404
 
 
 class AuctionOrderView(viewsets.ReadOnlyModelViewSet):
@@ -48,8 +49,6 @@ class OrderView(viewsets.ReadOnlyModelViewSet):
     serializer_class = OrderSerializer
     permission_classes = (permissions.IsAuthenticated,)
 
-    # queryset = Order.objects.all()
-
     def get_queryset(self):
         get_only_my_orders = self.request.GET.get('get_only_my_orders')
         if get_only_my_orders and get_only_my_orders == 'true':
@@ -65,3 +64,13 @@ class CategoryOrderView(viewsets.ReadOnlyModelViewSet):
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
     permission_classes = (permissions.IsAuthenticated,)
+
+
+class BetsOrderView(viewsets.ReadOnlyModelViewSet):
+    serializer_class = BetSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get_queryset(self):
+        auction_id = self.request.GET.get('auction_id')
+        auction = get_object_or_404(AuctionOrder, pk=auction_id)
+        return auction.get_best_bet(5)

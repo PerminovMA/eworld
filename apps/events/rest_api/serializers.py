@@ -2,7 +2,7 @@ __author__ = 'PerminovMA@live.ru'
 
 from rest_framework import serializers
 from events.models import AuctionOrder, Order
-from events.models import Category
+from events.models import Category, Bet
 from profiles.rest_api.serializers import ClientSerializer, CitySerializer
 
 
@@ -37,3 +37,10 @@ class OrderSerializer(BaseOrderSerializer):
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
+
+
+class BetSerializer(serializers.ModelSerializer):
+    owner = ClientSerializer()
+
+    class Meta:
+        model = Bet

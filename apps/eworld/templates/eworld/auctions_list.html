@@ -91,7 +91,7 @@
                 <div class="project-list">
                     <article class="project-item" ng-repeat="auction in auctions">
                         <header>
-                            <h2><a href="/model/single-auction.html">[[auction.name]]</a></h2>
+                            <h2><a href="{% url 'eworld:single_auction' auction_id='' %}[[auction.id]]/">[[auction.name]]</a></h2>
                         </header>
                         <p>[[auction.description]]</p>
                         <footer>
