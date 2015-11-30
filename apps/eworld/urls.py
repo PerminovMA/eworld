@@ -15,6 +15,9 @@ urlpatterns = patterns('',
                        url(r'single_auction/(?P<auction_id>[0-9]?)', views.single_auction,
                            name='single_auction'),
 
+                       url(r'to_bet', TemplateView.as_view(template_name='eworld/modals/to_bet.html'),
+                           name='to_bet'),
+
                        url(r'my_orders_list', TemplateView.as_view(template_name='eworld/my_orders_list.html'),
                            name='my_orders_list'),
                        url(r'orders_list', TemplateView.as_view(template_name='eworld/orders_list.html'),

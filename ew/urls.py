@@ -29,4 +29,5 @@ urlpatterns = [
     url(r'^angular_urls_config$', TemplateView.as_view(template_name='eworld/js/urls_config.js'),
         name='angular_urls_config'),
     # url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)  # Only for development (not production).
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL,
+                                                                           document_root=settings.STATIC_ROOT)  # Only for development (not production).

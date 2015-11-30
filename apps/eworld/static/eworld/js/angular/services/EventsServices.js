@@ -10,18 +10,13 @@ app.factory('OrdersService', [
 
 app.factory('AuctionsService', [
     '$resource', 'URLs', function($resource, URLs) {
-        return $resource(URLs.auctions_data_url, {});
+        return $resource(URLs.auctions_data_url, {}, {get_best_bets: {method:'GET', params:{},
+            url:URLs.auctions_data_url+'best_bets', isArray:true}});
     }
 ]);
 
 app.factory('CategoriesService', [
     '$resource', 'URLs', function($resource, URLs) {
         return $resource(URLs.categories_data_url, {});
-    }
-]);
-
-app.factory('BetsService', [
-    '$resource', 'URLs', function($resource, URLs) {
-        return $resource(URLs.bets_data_url, {});
     }
 ]);

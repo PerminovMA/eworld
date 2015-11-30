@@ -6,6 +6,9 @@ from rest_framework import viewsets
 from rest_framework import permissions
 import datetime
 from django.shortcuts import get_object_or_404
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework.decorators import detail_route, list_route
 
 
 class AuctionOrderView(viewsets.ReadOnlyModelViewSet):
@@ -44,6 +47,14 @@ class AuctionOrderView(viewsets.ReadOnlyModelViewSet):
 
         return auctions_set
 
+    @list_route()
+    def best_bets(self, request):
+        auction_id = self.request.GET.get('auction_id')
+        auction = get_object_or_404(AuctionOrder, pk=auction_id)
+        bets_queryset = auction.get_best_bet(5)
+        serializer = BetSerializer(bets_queryset, many=True)
+        return Response(serializer.data)
+
 
 class OrderView(viewsets.ReadOnlyModelViewSet):
     serializer_class = OrderSerializer
@@ -64,13 +75,3 @@ class CategoryOrderView(viewsets.ReadOnlyModelViewSet):
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
     permission_classes = (permissions.IsAuthenticated,)
-
-
-class BetsOrderView(viewsets.ReadOnlyModelViewSet):
-    serializer_class = BetSerializer
-    permission_classes = (permissions.IsAuthenticated,)
-
-    def get_queryset(self):
-        auction_id = self.request.GET.get('auction_id')
-        auction = get_object_or_404(AuctionOrder, pk=auction_id)
-        return auction.get_best_bet(5)
