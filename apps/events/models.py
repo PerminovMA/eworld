@@ -81,6 +81,7 @@ class AuctionOrder(BaseOrder):
                         (BaseOrder.ORDER_COMPLETE, 'ORDER_COMPLETE'))
 
     start_price = models.DecimalField(max_digits=8, decimal_places=2, default=0.00)
+    min_price = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True)
     status = models.CharField(choices=AUCTION_STATUSES, max_length=18, default=AUCTION_IN_PROCESS)
     attaches = GenericRelation(Attach, related_query_name='auction_order', content_type_field='content_type',
                                object_id_field='object_id')

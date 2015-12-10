@@ -10,6 +10,8 @@ def single_auction(request, auction_id):
 
     auction_type = ContentType.objects.get_for_model(auction_order)
     auction_attaches = Attach.objects.filter(content_type__pk=auction_type.id, object_id=auction_order.id)
+    if auction_order.min_price is None:
+        auction_order.min_price = auction_order.start_price / 2
 
     context = {"auction_order": auction_order,
                "auction_categories": auction_categories,

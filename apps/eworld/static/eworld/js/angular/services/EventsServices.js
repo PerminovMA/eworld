@@ -10,8 +10,10 @@ app.factory('OrdersService', [
 
 app.factory('AuctionsService', [
     '$resource', 'URLs', function($resource, URLs) {
-        return $resource(URLs.auctions_data_url, {}, {get_best_bets: {method:'GET', params:{},
-            url:URLs.auctions_data_url+'best_bets', isArray:true}});
+        return $resource(URLs.auctions_data_url, {}, {
+            to_bet: {method:'PUT', params:{auction_id: '@id'}, url:URLs.auctions_data_url+':auction_id/to_bet/'},
+            get_best_bets: {method:'GET', url:URLs.auctions_data_url+':auction_id/best_bets/', isArray:true}
+        });
     }
 ]);
 

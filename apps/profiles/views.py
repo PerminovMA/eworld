@@ -39,7 +39,7 @@ def user_registration(request):
 
 def user_authorization(request):
     if request.user.is_authenticated():
-        pass  # redirect to success page
+        pass  # TODO redirect to success page
 
     if request.method == "GET":
         form = EmailAuthorizationForm()

@@ -106,8 +106,9 @@
                  -->
                 <div class="form-group-lg">
                     <p class="lead" ng-if="best_bet">[[best_bet.amount]] руб.</p>
-                    <button class="btn btn-primary btn-lg" ng-click="open_to_bet_modal()">Сделать ставку</button>
-                    <p class="help-block">Ставка понизит текущую стоимость на 100 руб.</p>
+                    <button class="btn btn-primary btn-lg" ng-click="to_bet()" ng-if="decrease_rate > 0">Сделать ставку</button>
+                    <p class="help-block" ng-if="decrease_rate > 0">Ставка понизит текущую стоимость на [[decrease_rate]] руб.</p>
+                    <p class="help-block" ng-if="decrease_rate <= 0" style="color: darkred; font-weight: 500;">Ставка достигла минимума.</p>
                 </div>
             </form>
         </section>
@@ -148,6 +149,9 @@
     <script type="text/javascript">
         // CONSTANTS BLOCK
         var AUCTION_ID = {{ auction_order.id }};
+        STANDARD_DECREASE_RATE = 100;
+        START_PRICE = {{ auction_order.start_price }};
+        MIN_PRICE = {{ auction_order.min_price }};
         // END CONSTANTS BLOCK
     </script>
     {{ block.super }}

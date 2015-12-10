@@ -8,5 +8,4 @@ app.constant("URLs", {
         auctions_data_url: "{% url 'eworld:rest_api_urls:auctions_data-list' %}",
         orders_data_url: "{% url 'eworld:rest_api_urls:orders_data-list' %}",
         categories_data_url: "{% url 'eworld:rest_api_urls:categories_data-list' %}",
-        to_bet_url: "{% url 'eworld:to_bet' %}"
     });

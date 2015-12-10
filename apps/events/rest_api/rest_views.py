@@ -3,17 +3,19 @@ __author__ = 'PerminovMA@live.ru'
 from events.rest_api.serializers import AuctionOrderSerializer, CategorySerializer, OrderSerializer, BetSerializer
 from events.models import AuctionOrder, Category, Order, Bet
 from rest_framework import viewsets
-from rest_framework import permissions
-import datetime
+import datetime, json
 from django.shortcuts import get_object_or_404
-from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework.decorators import detail_route, list_route
+from rest_framework.decorators import detail_route
+from django.http import HttpResponse
+from profiles.models import EventManager
+from rest_framework.permissions import IsAuthenticated
+from profiles.rest_api.permissions import IsEventManagers
 
 
-class AuctionOrderView(viewsets.ReadOnlyModelViewSet):
+class AuctionOrderView(viewsets.ModelViewSet):
     serializer_class = AuctionOrderSerializer
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
         get_only_my_auctions = self.request.GET.get('get_only_my_auctions')
@@ -47,18 +49,51 @@ class AuctionOrderView(viewsets.ReadOnlyModelViewSet):
 
         return auctions_set
 
-    @list_route()
-    def best_bets(self, request):
-        auction_id = self.request.GET.get('auction_id')
-        auction = get_object_or_404(AuctionOrder, pk=auction_id)
+    @detail_route(methods=['get'])
+    def best_bets(self, request, pk=None):
+        auction = get_object_or_404(AuctionOrder, pk=pk)
         bets_queryset = auction.get_best_bet(5)
         serializer = BetSerializer(bets_queryset, many=True)
         return Response(serializer.data)
 
+    @detail_route(methods=['put'], permission_classes=[IsAuthenticated, IsEventManagers])
+    def to_bet(self, request, pk=None):
+        new_amount = request.data.get('amount')
+        if new_amount is None:
+            return HttpResponse(json.dumps({"result": "fail", "message": "'amount' not found"}))
+        print new_amount
+
+        auction = get_object_or_404(AuctionOrder, pk=pk)
+        if auction.status != AuctionOrder.AUCTION_IN_PROCESS:
+            return HttpResponse(json.dumps({"result": "fail", "message": "Auction closed"}))
+
+        # if min_price is None then min_price = 50% of start_price
+        min_price = auction.min_price if auction.min_price else auction.start_price / 2
+        if new_amount < min_price:
+            return HttpResponse(json.dumps({"result": "fail", "message": "New amount less than min price"}))
+
+        if new_amount == min_price:
+            new_bet = Bet.objects.create(auction=auction, amount=new_amount, owner=request.user.event_manager)
+            serializer = BetSerializer(new_bet)
+            auction.status = AuctionOrder.MANAGER_SELECTING
+            auction.save(update_fields=['status'])
+            return HttpResponse(json.dumps({"result": "success", "message": "Bet created", "new_bet": serializer.data}))
+
+        best_bet_list = auction.get_best_bet(1)
+        if best_bet_list:
+            best_bet = best_bet_list[0]
+            if new_amount > best_bet.amount:
+                return HttpResponse(json.dumps({"result": "fail", "message": "New amount more than best bet amount"}))
+
+        new_bet = Bet.objects.create(auction=auction, amount=new_amount, owner=request.user.event_manager)
+        serializer = BetSerializer(new_bet)
+
+        return HttpResponse(json.dumps({"result": "success", "message": "Bet created", "new_bet": serializer.data}))
+
 
 class OrderView(viewsets.ReadOnlyModelViewSet):
     serializer_class = OrderSerializer
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
         get_only_my_orders = self.request.GET.get('get_only_my_orders')
@@ -74,4 +109,4 @@ class OrderView(viewsets.ReadOnlyModelViewSet):
 class CategoryOrderView(viewsets.ReadOnlyModelViewSet):
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (IsAuthenticated,)
