@@ -1,9 +1,8 @@
 __author__ = 'PerminovMA@live.ru'
 
 from rest_framework import serializers
-from events.models import AuctionOrder, Order
-from events.models import Category, Bet
-from profiles.rest_api.serializers import ClientSerializer, CitySerializer
+from events.models import AuctionOrder, Order, Comment, Category, Bet
+from profiles.rest_api.serializers import ClientSerializer, CitySerializer, UserProfileShortSerializer
 
 
 class BaseOrderSerializer(serializers.ModelSerializer):
@@ -44,3 +43,10 @@ class BetSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Bet
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    owner = UserProfileShortSerializer()
+
+    class Meta:
+        model = Comment

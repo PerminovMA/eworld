@@ -7,6 +7,7 @@ from eworld.models import Attach
 from django.db.models.signals import pre_delete
 from django.dispatch.dispatcher import receiver
 from eworld.utils import generate_filename
+from django.template.defaultfilters import truncatewords
 
 
 def get_upload_category_icon_path(instance, filename):
@@ -39,6 +40,15 @@ def category_icon_deleter(sender, instance, **kwargs):
     instance.icon.delete(False)
 
 
+class Comment(models.Model):
+    text = models.TextField()
+    owner = models.ForeignKey(UserProfile)
+    answer_to = models.ForeignKey('self', null=True, blank=True, on_delete=models.SET_NULL)
+
+    def __unicode__(self):
+        return str(self.id) + ": " + truncatewords(self.text, 5)
+
+
 class BaseOrder(models.Model):
     ORDER_COMPLETE = 'ORDER_COMPLETE'
     ORDER_IN_PROCESS = 'ORDER_IN_PROCESS'
@@ -52,6 +62,7 @@ class BaseOrder(models.Model):
     requirements = models.TextField(null=True, blank=True)
     order_views = models.ManyToManyField(UserProfile, blank=True, related_name='%(class)s_views_set')
     categories = models.ManyToManyField(Category, blank=True, related_name='%(class)s_set')
+    comments = models.ManyToManyField(Comment, blank=True)
 
     class Meta:
         abstract = True

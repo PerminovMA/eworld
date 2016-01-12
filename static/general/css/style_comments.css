@@ -1,0 +1,28 @@
+.comment-message-list {
+    margin-left: 2em;
+    margin-top: 1em;
+    background-color: #e3e3e3;
+    padding-top: 0.5em;
+}
+
+.comment-message-list .comment-message {
+    margin-top: 2em;
+    display: block;
+}
+
+.comment-message-list .comment-message span {
+    float: left;
+    clear: left;
+}
+
+.comment-message-list .comment-message .comment-message-meta {
+    margin-top: 1em;
+}
+
+.clearfix:after {
+  content: "."; /* добавить содержимое: "." */
+  display: block;  /* сделать блоком, т.к. inline не может иметь clear */
+  clear: both;  /* с обеих сторон clear */
+  visibility: hidden; /* сделать невидимым, зачем нам точка внизу? */
+  height: 0;  /* сделать высоту 0, чтобы не занимал место */
+}

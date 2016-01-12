@@ -1,5 +1,5 @@
 from django.contrib import admin
-from models import Order, AuctionOrder, Bet, Category
+from models import Order, AuctionOrder, Bet, Category, Comment
 
 
 @admin.register(Order)
@@ -34,3 +34,6 @@ class BetAdmin(admin.ModelAdmin):
 @admin.register(Category)
 class BetAdmin(admin.ModelAdmin):
     list_display = ('name', 'order_percent', 'auction_percent')
+
+
+admin.site.register(Comment)

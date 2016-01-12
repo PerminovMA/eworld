@@ -1,6 +1,7 @@
 __author__ = 'PerminovMA@live.ru'
 
-from events.rest_api.serializers import AuctionOrderSerializer, CategorySerializer, OrderSerializer, BetSerializer
+from events.rest_api.serializers import AuctionOrderSerializer, CategorySerializer, OrderSerializer, BetSerializer, \
+    CommentSerializer
 from events.models import AuctionOrder, Category, Order, Bet
 from rest_framework import viewsets
 import datetime, json
@@ -54,6 +55,12 @@ class AuctionOrderView(viewsets.ModelViewSet):
         auction = get_object_or_404(AuctionOrder, pk=pk)
         bets_queryset = auction.get_best_bet(5)
         serializer = BetSerializer(bets_queryset, many=True)
+        return Response(serializer.data)
+
+    @detail_route(methods=['get'])
+    def comments(self, request, pk=None):
+        auction = get_object_or_404(AuctionOrder, pk=pk)
+        serializer = CommentSerializer(auction.comments, many=True)
         return Response(serializer.data)
 
     @detail_route(methods=['put'], permission_classes=[IsAuthenticated, IsEventManagers])

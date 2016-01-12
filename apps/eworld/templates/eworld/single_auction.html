@@ -1,6 +1,11 @@
 {% extends "eworld/base_template.html" %}
 {% load staticfiles %}
 
+{% block stylesheets %}
+    {{ block.super }}
+    <link rel='stylesheet' href='{% static "css/style_comments.css" %}' type='text/css' media='all' />
+{% endblock %}
+
 {% block body %}
 
 <div class="container-fluid" ng-controller="SingleAuctionController">
@@ -108,7 +113,7 @@
                     <p class="lead" ng-if="best_bet">[[best_bet.amount]] руб.</p>
                     <button class="btn btn-primary btn-lg" ng-click="to_bet()" ng-if="decrease_rate > 0">Сделать ставку</button>
                     <p class="help-block" ng-if="decrease_rate > 0">Ставка понизит текущую стоимость на [[decrease_rate]] руб.</p>
-                    <p class="help-block" ng-if="decrease_rate <= 0" style="color: darkred; font-weight: 500;">Ставка достигла минимума.</p>
+                    <p class="help-block" ng-if="decrease_rate <= 0" style="color: darkred; font-weight: 500;">Ставка достигла минимума, аукцион остановлен.</p>
                 </div>
             </form>
         </section>
@@ -124,18 +129,23 @@
                     <time>15 апр, 2015 11:37</time>
                 </span>
             </li>
-{#            <li class="comment-item">#}
-{#                <span class="comment-text lead">9 800 руб.</span>#}
-{#                <span class="comment-meta">#}
-{#                     <a href="#" class="user"><img src="images/avatar.jpg" class="avatar img-circle" />User Name, Санкт-Петербург</a><time>15 апр, 2015 11:37</time>#}
-{#                </span>#}
-{#            </li>#}
-{#            <li class="comment-item">#}
-{#                <span class="comment-text lead">9 900 руб.</span>#}
-{#                <span class="comment-meta">#}
-{#                     <a href="#" class="user"><img src="images/avatar.jpg" class="avatar img-circle" />User Name, Санкт-Петербург</a><time>15 апр, 2015 11:37</time>#}
-{#                </span>#}
-{#            </li>#}
+        </ul>
+
+        <ul class="comment-message-list">
+            <li class="comment-message clearfix">
+                <span>text message</span>
+                <span class="comment-message-meta">
+                    <a href="#" class="user"><img src="images/avatar.jpg" class="avatar img-circle" /> User Name, Санкт-Петербург </a><time>15 апр, 2015 11:37</time>
+                </span>
+
+            </li>
+            <li class="comment-message clearfix">
+                <span>text message</span>
+                <span class="comment-message-meta">
+                     <a href="#" class="user"><img src="images/avatar.jpg" class="avatar img-circle" />User Name, Санкт-Петербург </a><time>15 апр, 2015 11:37</time>
+                </span>
+            </li>
+            <div style="clear:both; margin-top: 1em; visibility: hidden;">.</div>
         </ul>
     </section>
 
