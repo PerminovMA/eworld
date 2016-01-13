@@ -8,6 +8,8 @@
 .comment-message-list .comment-message {
     margin-top: 2em;
     display: block;
+    padding-bottom: 1em;
+    border-bottom: groove;
 }
 
 .comment-message-list .comment-message span {

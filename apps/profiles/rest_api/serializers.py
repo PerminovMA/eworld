@@ -20,7 +20,7 @@ class UserProfileShortSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserProfile
-        fields = ('id', 'first_name', 'last_name', 'avatar', 'cities')
+        fields = ('id', 'first_name', 'last_name', 'avatar', 'cities', )
 
 
 class ClientSerializer(serializers.ModelSerializer):

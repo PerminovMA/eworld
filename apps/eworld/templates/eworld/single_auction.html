@@ -131,21 +131,24 @@
             </li>
         </ul>
 
-        <ul class="comment-message-list">
-            <li class="comment-message clearfix">
-                <span>text message</span>
+        <ul class="comment-message-list"> <!-- comments block -->
+            <p class="lead">Комментарии</p>
+            <li class="comment-message clearfix" ng-repeat="comment in comments">
+                <span>[[comment.text]]</span>
                 <span class="comment-message-meta">
-                    <a href="#" class="user"><img src="images/avatar.jpg" class="avatar img-circle" /> User Name, Санкт-Петербург </a><time>15 апр, 2015 11:37</time>
-                </span>
-
-            </li>
-            <li class="comment-message clearfix">
-                <span>text message</span>
-                <span class="comment-message-meta">
-                     <a href="#" class="user"><img src="images/avatar.jpg" class="avatar img-circle" />User Name, Санкт-Петербург </a><time>15 апр, 2015 11:37</time>
+                    <a href="#" class="user">
+                        <img src="[[comment.owner.avatar]]" width="50px;" height="50px;" class="avatar img-circle" />
+                        [[comment.owner.first_name]] [[comment.owner.last_name]]
+                    </a>
+                    <p ng-if="[[comment.owner.cities.length]]" title="[[comment.owner.cities | allCities]]">[[comment.owner.cities | firstCity]]</p>
+                    <time>[[comment.datetime | date:"HH:mm dd.MM.yyyy"]]</time>
                 </span>
             </li>
             <div style="clear:both; margin-top: 1em; visibility: hidden;">.</div>
+            <!-- add comment block -->
+            <div>
+
+            </div>
         </ul>
     </section>
 

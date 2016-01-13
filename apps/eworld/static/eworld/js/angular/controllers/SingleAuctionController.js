@@ -33,11 +33,29 @@ app.controller("SingleAuctionController",
                     //
                 },
                 function (err_obj) {
+                    console.log(err_obj);
                     alert("Произошла ошибка при получении списка ставок, обратитесь к администратору сайта.")
                 }
             );
         };
+
+        $scope.updateComments = function () {
+            AuctionsService.get_comments(
+                {
+                    auction_id: AUCTION_ID
+                },
+                function (data) {
+                    $scope.comments = data;
+                },
+                function (err_obj) {
+                    console.log(err_obj);
+                    alert("Произошла ошибка при получении комментариев, обратитесь к администратору сайта.")
+                }
+            );
+        };
+
         $scope.updateBets();
+        $scope.updateComments();
 
         $scope.to_bet = function () {
             AuctionsService.to_bet(

@@ -42,6 +42,7 @@ def category_icon_deleter(sender, instance, **kwargs):
 
 class Comment(models.Model):
     text = models.TextField()
+    datetime = models.DateTimeField(auto_now_add=True)
     owner = models.ForeignKey(UserProfile)
     answer_to = models.ForeignKey('self', null=True, blank=True, on_delete=models.SET_NULL)
 
