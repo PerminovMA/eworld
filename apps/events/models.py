@@ -40,7 +40,7 @@ def category_icon_deleter(sender, instance, **kwargs):
     instance.icon.delete(False)
 
 
-class Comment(models.Model):
+class OrderComment(models.Model):
     text = models.TextField()
     datetime = models.DateTimeField(auto_now_add=True)
     owner = models.ForeignKey(UserProfile)
@@ -63,7 +63,7 @@ class BaseOrder(models.Model):
     requirements = models.TextField(null=True, blank=True)
     order_views = models.ManyToManyField(UserProfile, blank=True, related_name='%(class)s_views_set')
     categories = models.ManyToManyField(Category, blank=True, related_name='%(class)s_set')
-    comments = models.ManyToManyField(Comment, blank=True)
+    comments = models.ManyToManyField(OrderComment, blank=True)
 
     class Meta:
         abstract = True
