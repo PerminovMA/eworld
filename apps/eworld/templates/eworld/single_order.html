@@ -83,29 +83,18 @@
                 </p>
                 <div class="form-group-lg">
                     <label for="commentText" class="sr-only">Комментарий</label>
-                    <textarea id="commentText" class="form-control" placeholder="Комментарий" rows="9"></textarea>
+                    <textarea id="commentText" class="form-control" placeholder="Комментарий" name="new_comment_text" ng-model="new_comment_text" rows="9"></textarea>
                     <p class="help-block">Example block-level help text here.</p>
                 </div>
-                <button type="submit" class="btn btn-primary">Отправить</button>
+{#                <button class="btn btn-primary" ng-click="make_comment()">Отправить</button>#}
+                <button class="btn btn-primary" ng-click="make_comment()">Отправить</button>
             </form>
         </section>
         <ul class="comment-list">
-            <li class="comment-item">
-                <span class="comment-text">On Friday, at South by Southwest, all that will change. For the duration of the festival, Spotify House will be arrayed in a bold and explosively colorful new brand identity, which was the result of a year's worth of work, and many trips to the company’s Stockholm headquarters, by the New York design firm, Collins.</span>
+            <li class="comment-item" ng-repeat="comment in comments">
+                <span class="comment-text">[[comment.text]]</span>
                 <span class="comment-meta">
-                     <a href="#" class="user"><img src="images/avatar.jpg" class="avatar img-circle" />User Name, Санкт-Петербург</a><time>15 апр, 2015 11:37</time>
-                </span>
-            </li>
-            <li class="comment-item">
-                <span class="comment-text">Spotify House will be arrayed in a bold and explosively colorful new brand identity, which was the result of a year's worth of work, and many trips to the company’s Stockholm </span>
-                <span class="comment-meta">
-                     <a href="#" class="user"><img src="images/avatar.jpg" class="avatar img-circle" />User Name, Санкт-Петербург</a><time>15 апр, 2015 11:37</time>
-                </span>
-            </li>
-            <li class="comment-item">
-                <span class="comment-text">The tangle of rainbow-hued wires drapes down the walls, over table-tops and chair backs, and around light-fittings in Tetchan – a  bar that serves grilled meat skewers known as Yakitori. To contrast with the multi-coloured and jumbled aesthetic of the upper level, the architects added white and transparent details made from molten plastic to the street-level bar.</span>
-                <span class="comment-meta">
-                     <a href="#" class="user"><img src="images/avatar.jpg" class="avatar img-circle" />User Name, Санкт-Петербург</a><time>15 апр, 2015 11:37</time>
+                     <a href="#" class="user"><img src="[[comment.owner.avatar]]" class="avatar img-circle" />[[comment.owner.last_name]] [[comment.owner.first_name]]</a> <span title="[[comment.owner.cities | allCities]]">[[comment.owner.cities | firstCity]]</span> <time>[[comment.datetime | date:"HH:mm dd.MM.yyyy"]]</time>
                 </span>
             </li>
         </ul>
@@ -117,6 +106,11 @@
 {% endblock %}
 
 {% block scripts %}
+    <script type="text/javascript">
+        // CONSTANTS BLOCK
+        var ORDER_ID = {{ order.id }};
+        // END CONSTANTS BLOCK
+    </script>
     {{ block.super }}
     <script src="{% static 'eworld/js/angular/services/EventsServices.js' %}"></script>
     <script src="{% static 'eworld/js/angular/controllers/SingleOrderController.js' %}"></script>

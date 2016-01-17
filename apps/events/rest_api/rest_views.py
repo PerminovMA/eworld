@@ -113,7 +113,7 @@ class AuctionOrderView(viewsets.ModelViewSet):
         return HttpResponse(json.dumps({"result": "success", "message": "Comment added"}))
 
 
-class OrderView(viewsets.ReadOnlyModelViewSet):
+class OrderView(viewsets.ModelViewSet):
     serializer_class = OrderSerializer
     permission_classes = (IsAuthenticated,)
 
@@ -126,6 +126,27 @@ class OrderView(viewsets.ReadOnlyModelViewSet):
                 return []
 
         return Order.objects.all()
+
+    @detail_route(methods=['get'])
+    def comments(self, request, pk=None):
+        print 7
+        order = get_object_or_404(Order, pk=pk)
+        serializer = CommentSerializer(order.comments, many=True)
+        return Response(serializer.data)
+
+    @detail_route(methods=['put'], permission_classes=[IsAuthenticated, IsEventManagers])
+    def make_comment(self, request, pk=None):
+        order = get_object_or_404(Order, pk=pk)
+
+        text = request.GET.get('text')
+        answer_to = request.GET.get('answer_to')  # if this message is the answer, it is parameter - other comment ID
+
+        if answer_to:
+            answer_to = get_object_or_404(OrderComment, pk=answer_to)
+
+        order.comments.add(OrderComment.objects.create(owner=request.user, text=text, answer_to=answer_to))
+
+        return HttpResponse(json.dumps({"result": "success", "message": "Comment added"}))
 
 
 class CategoryOrderView(viewsets.ReadOnlyModelViewSet):

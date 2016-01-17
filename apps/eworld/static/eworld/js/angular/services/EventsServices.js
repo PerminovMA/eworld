@@ -4,7 +4,10 @@
 
 app.factory('OrdersService', [
     '$resource', 'URLs', function($resource, URLs) {
-        return $resource(URLs.orders_data_url, {});
+        return $resource(URLs.orders_data_url, {}, {
+            get_comments: {method:'GET', url:URLs.orders_data_url+':order_id/comments/', isArray:true},
+            make_comment: {method:'PUT', params:{order_id: '@id', text: '@text'}, url:URLs.orders_data_url+':order_id/make_comment/'},
+        });
     }
 ]);
 
