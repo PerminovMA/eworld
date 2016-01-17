@@ -91,7 +91,7 @@
                 <div class="project-list">
                     <article class="project-item" ng-repeat="order in orders">
                         <header>
-                            <h2><a href="/model/single-auction.html">[[order.name]]</a></h2>
+                            <h2><a href="{% url 'eworld:single_order' '' %}[[order.id]]">[[order.name]]</a></h2>
                         </header>
                         <p>[[order.description]]</p>
                         <footer>
@@ -99,6 +99,7 @@
                             <p class="meta"><a href="#" class="user"><img src="[[order.owner.user.avatar]]" class="avatar img-circle" />[[order.owner.user.first_name + ' ' + order.owner.user.last_name]], [[order.city.name]]</a> <time>[[order.event_date | date: 'dd.MM.yyyy h:mm']]</time><span class="preview ew-icon-eye-small">[[order.order_views_count]]</span></p>
                         </footer>
                     </article>
+
 {#                    <article class="project-item">#}
 {#                        <header>#}
 {#                            <h2><a href="#">Project title example</a></h2>#}

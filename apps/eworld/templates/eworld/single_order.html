@@ -1,17 +1,11 @@
 {% extends "eworld/base_template.html" %}
 {% load staticfiles %}
 
-{% block stylesheets %}
-    {{ block.super }}
-    <link rel='stylesheet' href='{% static "css/style_comments.css" %}' type='text/css' media='all' />
-{% endblock %}
-
 {% block body %}
 
-<div class="container-fluid" ng-controller="SingleAuctionController">
-
+<div class="container-fluid" ng-controller="SingleOrderController">
     <main id="page">
-            {% block menu %} {{ block.super }} {% endblock %}
+        {% block menu %} {{ block.super }} {% endblock %}
             <section id="profile" class="min">
                 <header>
                     <div class="cover-overlay" style="background-image: url(https://unsplash.imgix.net/photo-1421779399549-3004b5ad7fa5?dpr=2&fit=crop&fm=jpg&h=600&q=75&w=700)"></div>
@@ -32,7 +26,7 @@
                     </ul>
                 </header>
                 <ul class="statistic row">
-                    <li class="col-md-4 col-sm-12"><span>171</span>просмотры</li>
+                    <li class="col-md-4 col-sm-12"><span>{{ order.order_views.count }}</span>просмотры</li>
                     <li class="col-md-4 col-sm-12"><span class="cash">5,00</span>баланс</li>
                     <li class="col-md-4 col-sm-12"><span>3,7</span>рейтинг</li>
                 </ul>
@@ -45,28 +39,25 @@
                     </ul>
                 </nav>
             </section>
-        </header>
 
     <section id="content" class="single-project">
         <header class="clearfix">
-            <h1 class="ew-icon-reduction">{{ auction_order.name }}</h1>
+            <h1 class="ew-icon-project">{{ order.name }}</h1>
             <aside class="meta">
-                <p class="ew-icon lead">{{ auction_order.start_price }} руб.</p>
-                <time class="ew-icon ew-icon-clock">{{ auction_order.event_date }}</time>
+                <p class="ew-icon lead">{{ order.price }} руб.</p>
+                <time class="ew-icon ew-icon-clock">{{ order.event_date }}</time>
                 <a href="#" class="ew-icon ew-icon-transport">
-                    {% for category in auction_categories %}
+                    {% for category in order_categories %}
                         {{ category }}
                         {% if not forloop.last %}
                             ,
                         {% endif %}
                     {% endfor %}
                 </a>
-                {% if auction_order.city.name %}
-                    <a href="#" class="ew-icon ew-icon-city">{{ auction_order.city.name }}</a>
-                {% endif %}
-                {% if auction_attaches %}
+                <a href="#" class="ew-icon ew-icon-city">{{ order.city.name }}</a>
+                {% if order_attaches %}
                     <span class="ew-icon ew-icon-attach">
-                        {% for attach in auction_attaches %}
+                        {% for attach in order_attaches %}
                             <a href="{{ attach.file.url }}" target="_blank">{{ attach.filename }}</a>
                             {% if not forloop.last %}
                                 ,
@@ -76,99 +67,57 @@
                 {% endif %}
             </aside>
             <div class="description">
-                <p class="lead">{{ auction_order.description }}</p>
-                <p class="lead">{{ auction_order.requirements }}</p>
+                <p class="lead">{{ order.description }}</p>
             </div>
-                <a href="#projectContent01" class="btn btn-default btn-lg btn-more collapsed" type="button" data-toggle="collapse"  aria-expanded="false" aria-controls="projectContent01">Развернуть подробности</a>
         </header>
-        <article id="projectContent01" class="collapse">
+        <article>
             <div class="single-content">
-                <p>Each of the wings radiates away from the central axis at an angle, dividing the half-hectare plot into three courtyards, each designated for a different use.</p>
-                <p>One provides car parking space, while the other two contain a vegetable garden and a play area with a swimming pool.</p>
-                <p>At ground floor level, a driveway cuts through one wing to separate the garage from the primary living space. This creates a sheltered outdoor space that the architects describe as the "breezeway".</p>
-                <p>"The house re-configures the typical suburban lot organisation of the front yard and back yard," said the architects.</p>
-                <p>"Each yard is programmed according to its activity – a recreation yard toward the south with a pool, a garden yard facing west and an auto yard for cars, motorcycles and go-karts," they added. "The house becomes a three-spoke division between these yards."</p>
-                <p>A kitchen, a living room and garage occupy the rest of the ground-floor level, while the three spokes of the first floor provide separated bedroom and bathroom quarters.</p>
-                <p>The outer walls of all three wings are clad in panels of pale grey cement, intended to reference the mottled tones of the nearby beach.</p>
+                <p>{{ order.requirements }}</p>
             </div>
         </article>
 
         <section class="comment-form">
             <form>
-                <p class="comment-meta" ng-if="best_bet">
-                    <a href="#" class="user">
-                        <img ng-if="best_bet.owner.user.avatar" src="[[best_bet.owner.user.avatar]]" class="avatar img-circle" />
-                        <img ng-if="!best_bet.owner.user.avatar" src="http://multoigri.ru/images/desc/igri-mikki-mays-02.jpg" class="avatar img-circle" />
-                        [[best_bet.owner.user.first_name + ' ' + best_bet.owner.user.last_name]]
-                    </a>
+                <p class="comment-meta">
+                     <a href="#" class="user"><img src="{{ user.avatar.url }}" class="avatar img-circle" />{{ user.first_name }} {{ user.last_name }}</a>
                 </p>
-                <!--
                 <div class="form-group-lg">
                     <label for="commentText" class="sr-only">Комментарий</label>
                     <textarea id="commentText" class="form-control" placeholder="Комментарий" rows="9"></textarea>
                     <p class="help-block">Example block-level help text here.</p>
                 </div>
-                 -->
-                <div class="form-group-lg">
-                    <p class="lead" ng-if="best_bet">[[best_bet.amount]] руб.</p>
-                    <button class="btn btn-primary btn-lg" ng-click="to_bet()" ng-if="decrease_rate > 0">Сделать ставку</button>
-                    <p class="help-block" ng-if="!auction_is_stopped">Ставка понизит текущую стоимость на [[decrease_rate]] руб.</p>
-                    <p class="help-block" ng-if="auction_is_stopped" style="color: darkred; font-weight: 500;">Ставка достигла минимума, аукцион остановлен.</p>
-                </div>
+                <button type="submit" class="btn btn-primary">Отправить</button>
             </form>
         </section>
         <ul class="comment-list">
-            <li class="comment-item" ng-if="bets" ng-repeat="bet in bets">
-                <span class="comment-text lead">[[bet.amount]] руб.</span>
+            <li class="comment-item">
+                <span class="comment-text">On Friday, at South by Southwest, all that will change. For the duration of the festival, Spotify House will be arrayed in a bold and explosively colorful new brand identity, which was the result of a year's worth of work, and many trips to the company’s Stockholm headquarters, by the New York design firm, Collins.</span>
                 <span class="comment-meta">
-                     <a href="#" class="user">
-                         <img ng-if="bet.owner.user.avatar" src="[[bet.owner.user.avatar]]" class="avatar img-circle"/>
-                         <img ng-if="!bet.owner.user.avatar" src="http://multoigri.ru/images/desc/igri-mikki-mays-02.jpg" class="avatar img-circle"/>
-                         [[bet.owner.user.first_name + ' ' + bet.owner.user.last_name]], [[bet.owner.user.cities[0].name]]
-                     </a>
-                    <time>15 апр, 2015 11:37</time>
+                     <a href="#" class="user"><img src="images/avatar.jpg" class="avatar img-circle" />User Name, Санкт-Петербург</a><time>15 апр, 2015 11:37</time>
                 </span>
             </li>
-        </ul>
-
-        <ul class="comment-message-list"> <!-- comments block -->
-            <p class="lead">Комментарии</p>
-            <li class="comment-message clearfix" ng-repeat="comment in comments">
-                <span>[[comment.text]]</span>
-                <span class="comment-message-meta">
-                    <a href="#" class="user">
-                        <img src="[[comment.owner.avatar]]" width="50px;" height="50px;" class="avatar img-circle" />
-                        [[comment.owner.first_name]] [[comment.owner.last_name]]
-                    </a>
-                    <p ng-if="[[comment.owner.cities.length]]" title="[[comment.owner.cities | allCities]]">[[comment.owner.cities | firstCity]]</p>
-                    <time>[[comment.datetime | date:"HH:mm dd.MM.yyyy"]]</time>
+            <li class="comment-item">
+                <span class="comment-text">Spotify House will be arrayed in a bold and explosively colorful new brand identity, which was the result of a year's worth of work, and many trips to the company’s Stockholm </span>
+                <span class="comment-meta">
+                     <a href="#" class="user"><img src="images/avatar.jpg" class="avatar img-circle" />User Name, Санкт-Петербург</a><time>15 апр, 2015 11:37</time>
                 </span>
             </li>
-            <div style="clear:both; margin-top: 1em; visibility: hidden;">.</div>
-            <!-- add comment block -->
-            <div ng-if="!auction_is_stopped">
-                <textarea name=textarea cols=45 rows=6 name="new_comment_text" ng-model="new_comment_text"></textarea>
-                <button class="btn btn-primary" ng-click="make_comment()">Отправить</button>
-            </div>
+            <li class="comment-item">
+                <span class="comment-text">The tangle of rainbow-hued wires drapes down the walls, over table-tops and chair backs, and around light-fittings in Tetchan – a  bar that serves grilled meat skewers known as Yakitori. To contrast with the multi-coloured and jumbled aesthetic of the upper level, the architects added white and transparent details made from molten plastic to the street-level bar.</span>
+                <span class="comment-meta">
+                     <a href="#" class="user"><img src="images/avatar.jpg" class="avatar img-circle" />User Name, Санкт-Петербург</a><time>15 апр, 2015 11:37</time>
+                </span>
+            </li>
         </ul>
     </section>
 
     </main>
-
 </div>
 
 {% endblock %}
 
 {% block scripts %}
-    <script type="text/javascript">
-        // CONSTANTS BLOCK
-        var AUCTION_ID = {{ auction_order.id }};
-        STANDARD_DECREASE_RATE = 100;
-        START_PRICE = {{ auction_order.start_price }};
-        MIN_PRICE = {{ auction_order.min_price }};
-        // END CONSTANTS BLOCK
-    </script>
     {{ block.super }}
     <script src="{% static 'eworld/js/angular/services/EventsServices.js' %}"></script>
-    <script src="{% static 'eworld/js/angular/controllers/SingleAuctionController.js' %}"></script>
+    <script src="{% static 'eworld/js/angular/controllers/SingleOrderController.js' %}"></script>
 {% endblock %}

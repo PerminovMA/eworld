@@ -91,7 +91,8 @@
                 <div class="project-list">
                     <article class="project-item" ng-repeat="order in orders">
                         <header>
-                            <h2><a href="/model/single-auction.html">[[order.name]]</a></h2>
+{#                            <h2><a href="/model/single-auction.html">[[order.name]]</a></h2>#}
+                            <h2><a href="{% url 'eworld:single_order' '' %}[[order.id]]">[[order.name]]</a></h2>
                         </header>
                         <p>[[order.description]]</p>
                         <footer>

@@ -19,6 +19,8 @@ urlpatterns = patterns('',
                            name='my_orders_list'),
                        url(r'orders_list', TemplateView.as_view(template_name='eworld/orders_list.html'),
                            name='orders_list'),
+                       url(r'single_order/(?P<order_id>[0-9]?)', views.single_order,
+                           name='single_order'),
 
                        url(r'rest_api/', include(router.urls, namespace='rest_api_urls')),
                        )
