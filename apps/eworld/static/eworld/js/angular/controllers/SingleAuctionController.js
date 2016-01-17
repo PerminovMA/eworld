@@ -69,10 +69,32 @@ app.controller("SingleAuctionController",
                 },
                 function (err_obj) {
                     console.log(err_obj);
-                    alert("Произошла ошибка. Обновите страницу и попробуйте снова.")
+                    alert("Произошла ошибка. Обновите страницу и попробуйте снова.");
                 }
             );
 
+        };
+
+        $scope.make_comment = function () {
+
+            if (!this.new_comment_text) {
+                alert("Введите текст.");
+                return;
+            }
+
+            AuctionsService.make_comment(
+                {
+                    id: AUCTION_ID,  // variable AUCTION_ID is taken from HTML template
+                    text: this.new_comment_text
+                },
+                function (data) {
+                    $scope.updateComments();
+                },
+                function (err_obj) {
+                    console.log(err_obj);
+                    alert("Произошла ошибка при отправке комментария.");
+                }
+            )
         };
     }
 );

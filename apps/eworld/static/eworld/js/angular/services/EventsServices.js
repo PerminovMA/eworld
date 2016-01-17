@@ -12,6 +12,7 @@ app.factory('AuctionsService', [
     '$resource', 'URLs', function($resource, URLs) {
         return $resource(URLs.auctions_data_url, {}, {
             to_bet: {method:'PUT', params:{auction_id: '@id'}, url:URLs.auctions_data_url+':auction_id/to_bet/'},
+            make_comment: {method:'PUT', params:{auction_id: '@id', text: '@text'}, url:URLs.auctions_data_url+':auction_id/make_comment/'},
             get_best_bets: {method:'GET', url:URLs.auctions_data_url+':auction_id/best_bets/', isArray:true},
             get_comments: {method:'GET', url:URLs.auctions_data_url+':auction_id/comments/', isArray:true}
         });

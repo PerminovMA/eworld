@@ -2,7 +2,7 @@ __author__ = 'PerminovMA@live.ru'
 
 from events.rest_api.serializers import AuctionOrderSerializer, CategorySerializer, OrderSerializer, BetSerializer, \
     CommentSerializer
-from events.models import AuctionOrder, Category, Order, Bet
+from events.models import AuctionOrder, Category, Order, Bet, OrderComment
 from rest_framework import viewsets
 import datetime, json
 from django.shortcuts import get_object_or_404
@@ -96,6 +96,22 @@ class AuctionOrderView(viewsets.ModelViewSet):
         serializer = BetSerializer(new_bet)
 
         return HttpResponse(json.dumps({"result": "success", "message": "Bet created", "new_bet": serializer.data}))
+
+    @detail_route(methods=['put'], permission_classes=[IsAuthenticated, IsEventManagers])
+    def make_comment(self, request, pk=None):
+        auction = get_object_or_404(AuctionOrder, pk=pk)
+        if auction.status != AuctionOrder.AUCTION_IN_PROCESS:
+            return HttpResponse(json.dumps({"result": "fail", "message": "Auction closed"}))
+
+        text = request.GET.get('text')
+        answer_to = request.GET.get('answer_to')  # if this message is the answer, it is parameter - other comment ID
+
+        if answer_to:
+            answer_to = get_object_or_404(OrderComment, pk=answer_to)
+
+        auction.comments.add(OrderComment.objects.create(owner=request.user, text=text, answer_to=answer_to))
+
+        return HttpResponse(answer_to)
 
 
 class OrderView(viewsets.ReadOnlyModelViewSet):
