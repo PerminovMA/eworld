@@ -68,7 +68,6 @@ class AuctionOrderView(viewsets.ModelViewSet):
         new_amount = request.data.get('amount')
         if new_amount is None:
             return HttpResponse(json.dumps({"result": "fail", "message": "'amount' not found"}))
-        print new_amount
 
         auction = get_object_or_404(AuctionOrder, pk=pk)
         if auction.status != AuctionOrder.AUCTION_IN_PROCESS:
@@ -111,7 +110,7 @@ class AuctionOrderView(viewsets.ModelViewSet):
 
         auction.comments.add(OrderComment.objects.create(owner=request.user, text=text, answer_to=answer_to))
 
-        return HttpResponse(answer_to)
+        return HttpResponse(json.dumps({"result": "success", "message": "Comment added"}))
 
 
 class OrderView(viewsets.ReadOnlyModelViewSet):

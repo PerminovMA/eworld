@@ -4,7 +4,10 @@
 
 
 app.controller("SingleAuctionController",
-    function ($scope, AuctionsService, $modal, URLs) {
+    function ($scope, AuctionsService, $modal, URLs, $interval) {
+        var update_bets_timer;
+        var update_comments_timer;
+
         $scope.updateBets = function () {
             AuctionsService.get_best_bets(
                 {
@@ -30,7 +33,20 @@ app.controller("SingleAuctionController",
                         $scope.decrease_rate = STANDARD_DECREASE_RATE;
                     }
                     $scope.new_amount = current_best_price - $scope.decrease_rate;
-                    //
+                    $scope.auction_is_stopped = $scope.decrease_rate <= 0;
+
+                    // bet reached a minimum, the auction is stopped. Stops timers
+                    if ($scope.auction_is_stopped) {
+                        if (angular.isDefined(update_bets_timer)) {
+                            $interval.cancel(update_bets_timer);
+                            update_bets_timer = undefined;
+                        }
+                        if (angular.isDefined(update_comments_timer)) {
+                            $interval.cancel(update_comments_timer);
+                            update_comments_timer = undefined;
+                        }
+                    }
+
                 },
                 function (err_obj) {
                     console.log(err_obj);
@@ -76,7 +92,6 @@ app.controller("SingleAuctionController",
         };
 
         $scope.make_comment = function () {
-
             if (!this.new_comment_text) {
                 alert("Введите текст.");
                 return;
@@ -88,13 +103,25 @@ app.controller("SingleAuctionController",
                     text: this.new_comment_text
                 },
                 function (data) {
+                    if (data.result != "success") {
+                        alert("Произошла ошибка при отправке комментария: " + data.message);
+                    }
                     $scope.updateComments();
                 },
                 function (err_obj) {
                     console.log(err_obj);
-                    alert("Произошла ошибка при отправке комментария.");
+                    alert("Произошла ошибка при отправке комментария: " + err_obj);
                 }
-            )
+            );
+            this.new_comment_text = '';
         };
+
+        if (!$scope.auction_is_stopped && !angular.isDefined(update_bets_timer)) {
+            update_bets_timer = $interval($scope.updateBets, 1000);
+        }
+        if (!$scope.auction_is_stopped && !angular.isDefined(update_comments_timer)) {
+            update_comments_timer = $interval($scope.updateComments, 2000);
+        }
+
     }
 );
