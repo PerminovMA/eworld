@@ -79,7 +79,7 @@ class EventManager(models.Model):
     INDIVIDUAL_PERSON = 'INDIVIDUAL'
     LEGAL_PERSON = 'LEGAL'
     LEGAL_STATUSES = ((LEGAL_PERSON, 'Legal person'), (INDIVIDUAL_PERSON, 'Individual person'))
-    legal_status = models.CharField(choices=LEGAL_STATUSES, max_length=10)
+    legal_status = models.CharField(choices=LEGAL_STATUSES, max_length=10, default=INDIVIDUAL_PERSON)
 
     user = models.OneToOneField(UserProfile, related_name='event_manager')
     activity_index = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)

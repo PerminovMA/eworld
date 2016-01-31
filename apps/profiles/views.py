@@ -2,7 +2,7 @@
 
 from django.shortcuts import HttpResponse, render, Http404
 from forms import RegistrationForm, EmailAuthorizationForm
-from models import UserProfile
+from models import UserProfile, EventManager, Client
 import json
 from django import forms
 from django.core.urlresolvers import reverse
@@ -23,6 +23,12 @@ def user_registration(request):
                                    last_name=form.cleaned_data.get("last_name"))
             user_obj.set_password(form.cleaned_data.get("password"))
             user_obj.save()
+
+            user_type = request.POST.get("user_type")
+            if user_type == RegistrationForm.CLIENT_LABEL:
+                Client.objects.create(user=user_obj)
+            elif user_type == RegistrationForm.EVENT_MANAGER_LABEL:
+                EventManager.objects.create(user=user_obj)  # TODO add legal_status and categories
 
             user = authenticate(username=user_obj.email, password=form.cleaned_data.get("password"))
 

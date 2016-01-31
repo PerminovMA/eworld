@@ -55,19 +55,19 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="myRegisterOk" tabindex="-1" role="dialog" aria-labelledby="myRegisterOkLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-body text-center">
-                    <p class="lead ew-icon ew-icon-mail">Благодарим Вас за регистрацию на Eworld.</p>
-                    <p>Осталось совсем чуть–чуть. Проверьте свою почту и нажмите ссылку для подтверждения регистрации.</p>
-                </div>
-                <div class="modal-footer text-center">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
-                </div>
-            </div>
-        </div>
-    </div>
+{#    <div class="modal fade" id="myRegisterOk" tabindex="-1" role="dialog" aria-labelledby="myRegisterOkLabel" aria-hidden="true">#}
+{#        <div class="modal-dialog">#}
+{#            <div class="modal-content">#}
+{#                <div class="modal-body text-center">#}
+{#                    <p class="lead ew-icon ew-icon-mail">Благодарим Вас за регистрацию на Eworld.</p>#}
+{#                    <p>Осталось совсем чуть–чуть. Проверьте свою почту и нажмите ссылку для подтверждения регистрации.</p>#}
+{#                </div>#}
+{#                <div class="modal-footer text-center">#}
+{#                    <button type="button" class="btn btn-default" data-dismiss="modal">OK</button>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
 
 <div class="container-fluid">
 
@@ -85,10 +85,22 @@
         </header>
         <div class="page-content col-lg-7 col-md-9 col-sm-10 col-xs-12">
         <form method="POST" class="" action="{% url 'profile:registration' %}"> {% csrf_token %}
+            {% if form.non_field_errors %}
+                {% for error in form.non_field_errors %}
+                    <div class="alert alert-danger">{{ error }};</div>
+                {% endfor %}
+            {% endif %}
             {% for field in form %}
                 <div class="form-group form-group-lg">
                     <label for="{{ field.id_for_label }}">{{ field.errors }}</label>
+
+                  {% if field|get_field_type == "RadioSelect" %} {# additional labels only for RadioSelect #}
+                      <p>Выберите тип пользователя:</p>
+                      {{ field }}
+                  {% else %}
                     <input value="{% if field.value %}{{ field.value }}{% endif %}" type="{{ field|get_field_type }}" class="form-control" name="{{ field.name }}" id="{{ field.id_for_label }}" placeholder="{{ field.help_text }}">
+                  {% endif %}
+
                 </div>
             {% endfor %}
 
@@ -108,7 +120,8 @@
 
             <div class="form-group form-group-lg">
                 <div class="">
-                    <button type="submit" class="btn btn-default btn-lg" data-toggle="modal" data-target="#myRegisterOk">Зарегистрироваться</button>
+{#                    <button type="submit" class="btn btn-default btn-lg" data-toggle="modal" data-target="#myRegisterOk">Зарегистрироваться</button>#}
+                    <button type="submit" class="btn btn-default btn-lg">Зарегистрироваться</button>
                 </div>
             </div>
         </form>

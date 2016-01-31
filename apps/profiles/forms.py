@@ -1,18 +1,24 @@
 # -*- coding: utf-8 -*-
 
-__author__ = 'PerminovMA@live.ru'
-
 from django import forms
 from models import UserProfile
 from django.utils.translation import ugettext as _
 
+__author__ = 'PerminovMA@live.ru'
+
 
 class RegistrationForm(forms.Form):
+    CLIENT_LABEL = 'client'
+    EVENT_MANAGER_LABEL = 'event_manager'
+
     username = forms.CharField(help_text="Username", max_length=30)
     first_name = forms.CharField(help_text="Имя", required=False)
     last_name = forms.CharField(help_text="Фамилия", required=False)
     email = forms.EmailField(help_text="Электронная почта")
     phone_number = forms.CharField(max_length=15, required=False, help_text="Телефон")
+    user_type = forms.ChoiceField(
+        choices=[(CLIENT_LABEL, u'Клиент'), (EVENT_MANAGER_LABEL, u'Организатор мероприятий')],
+        initial='client', widget=forms.RadioSelect, required=True)
     password = forms.CharField(max_length=128, help_text="Пароль", widget=forms.PasswordInput)
 
     def clean_username(self):
