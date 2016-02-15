@@ -118,3 +118,4 @@ AUTHENTICATION_BACKENDS = (
 
 MEDIA_ROOT = ''.join((BASE_DIR, '/media/'))
 COUNT_FOLDERS = 9  # Count folders for distributed file storage
+LOGIN_URL = '/'

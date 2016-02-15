@@ -1,0 +1,225 @@
+{% extends "eworld/base_template.html" %}
+{% load staticfiles %}
+
+{% block stylesheets %}
+    {{ block.super }}
+    <link rel='stylesheet'  href='{% static "eworld/css/orders_list.css" %}' type='text/css' media='all' />
+    <link rel='stylesheet'  href='{% static "jquery-ui-1.11.4/jquery-ui.min.css" %}' type='text/css' media='all' />
+{% endblock %}
+
+{% block body %}
+    <div class="dashboard" xmlns="http://www.w3.org/1999/html">
+    <div class="container-fluid">
+
+        <main id="page">
+
+            {% block menu %}
+                {{ block.super }}
+            {% endblock %}
+
+            <section id="profile" class="min">
+                <header>
+                    <div class="cover-overlay" style="background-image: url(https://unsplash.imgix.net/photo-1421779399549-3004b5ad7fa5?dpr=2&fit=crop&fm=jpg&h=600&q=75&w=700)"></div>
+                    <a href="#" class="avatar ew-icon-organizer" style="background-image: url(https://ununsplash.imgix.net/photo-1429497587953-2e68f09d4283?dpr=2&fit=crop&fm=jpg&h=225&q=75&w=350);"></a>
+                    <button type="button" class="navbar-toggle collapsed ew-icon-open-sub" data-toggle="collapse" data-target="#profile_menu"></button>
+                    <h1>{{ user.first_name }} {{ user.last_name }}</h1>
+                    <ul class="rating">
+                        <li class="on"></li>
+                        <li class="on"></li>
+                        <li class="on"></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                    </ul>
+                </header>
+                <ul class="statistic row">
+                    <li class="col-md-4 col-sm-12"><span>171</span>просмотры</li>
+                    <li class="col-md-4 col-sm-12"><span class="cash">5,00</span>баланс</li>
+                    <li class="col-md-4 col-sm-12"><span>3,7</span>рейтинг</li>
+                </ul>
+                <nav id="profile_menu" class="collapse navbar-collapse">
+                    <ul class="nav nav-pills nav-stacked nav-icons">
+                        <li><a href="#" class="ew-icon-organizer">Моё резюме</a></li>
+                        <li><a href="{% url 'eworld:my_auctions_list' %}" class="ew-icon-reduction">Мои аукционы</a></li>
+                        <li><a href="{% url 'eworld:orders_list' %}" class="ew-icon-project">Заказы</a></li>
+                        <li><a href="#" class="ew-icon-calendar">Каледнарь занятости</a></li>
+                    </ul>
+                </nav>
+            </section>
+
+    <section id="content" class="single-project">
+
+        <div class="row top30">
+            <div class="col-md-10" style="margin-left: 3em;">
+                <h1>Создание заказа</h1>
+                <form method="POST" class="col-md-9" role="form" enctype="multipart/form-data" action="{% url 'eworld:add_event' %}"> {% csrf_token %}
+
+                    <div class="form-group">
+                        {{ form.name.errors }}
+                        <input name="{{ form.name.html_name }}" id="{{ form.name.id_for_label }}" type="text" class="form-control input-lg" placeholder="{{ form.name.help_text }}">
+                    </div>
+                    <div class="form-group">
+                        {{ form.event_date.errors }}
+                        <label for="{{ form.event_date.id_for_label }}">{{ form.event_date.help_text }}</label>
+                        <input name="{{ form.event_date.html_name }}" id="{{ form.event_date.id_for_label }}" type="text">
+                    </div>
+                    <div class="form-group" style="display: inline-table">
+                        {{ form.price.errors }}
+                        <input name="{{ form.price.html_name }}" type="number" class="form-control" id="{{ form.price.id_for_label }}" placeholder="{{ form.price.help_text }}" value="0" min="0"><div class="input-group-addon">&nbsp;руб.</div>
+                    </div>
+                    <div class="form-group">
+                        {{ form.city.errors }}
+                        <p class="ew-icon ew-icon-city">
+                            {{ form.city }}
+                        </p>
+                    </div>
+                    <div class="form-group">
+                        {{ form.categories.errors }}
+                        <label for="{{ form.categories.id_for_label }}">{{ form.categories.help_text }}</label>
+
+                        <div class="row">
+                            {% for category in categories_set %}
+                                <div class="left30 col-md-4 top10">
+                                    <img src="{{category.icon.url}}" width="40em;" height="40em;"/>
+                                    <input id="{{ form.categories.id_for_label }}" name="{{ form.categories.html_name }}" type="checkbox" value="{{ category.pk }}"/><span class="left5">{{category.name}}</span>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        {{ form.files.errors }}
+                        <p class="ew-icon ew-icon-attach">
+                            {{ form.files }}
+                        </p>
+                    </div>
+                    <div class="form-group">
+                        {{ form.description.errors }}
+                        <textarea id="{{ form.description.id_for_label }}" name="{{ form.description.html_name }}" class="form-control input-lg" placeholder="{{ form.description.help_text }}" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        {{ form.requirements.errors }}
+                        <textarea id="{{ form.requirements.id_for_label }}" name="{{ form.requirements.html_name }}" class="form-control input-lg" placeholder="{{ form.requirements.help_text }}" rows="3"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-default btn-lg">Опубликовать проект</button>
+                </form>
+            </div>
+        </div>
+
+{#                    <div class="checkbox">#}
+{#                        <label class="ew-icon-transport">#}
+{#                            <input type="checkbox" value="">Транспорт#}
+{#                        </label>#}
+{#                    </div>#}
+{#                    <div class="checkbox">#}
+{#                        <label class="ew-icon-video">#}
+{#                            <input type="checkbox" value="">Видеосьёмка#}
+{#                        </label>#}
+{#                    </div>#}
+{#                    <div class="checkbox">#}
+{#                        <label class="ew-icon-makeup">#}
+{#                            <input type="checkbox" value="">Стилисты#}
+{#                        </label>#}
+{#                    </div>#}
+{#                    <div class="checkbox">#}
+{#                        <label class="ew-icon-jewelry">#}
+{#                            <input type="checkbox" value="">Ювелирные изделия#}
+{#                        </label>#}
+{#                    </div>#}
+{#                    <div class="checkbox">#}
+{#                        <label class="ew-icon-halls">#}
+{#                            <input type="checkbox" value="">Рестораны#}
+{#                        </label>#}
+{#                    </div>#}
+{#                    <div class="checkbox">#}
+{#                        <label class="ew-icon-walk">#}
+{#                            <input type="checkbox" value="">Места прогулок#}
+{#                        </label>#}
+{#                    </div>#}
+{#                    <div class="checkbox">#}
+{#                        <label class="ew-icon-boat">#}
+{#                            <input type="checkbox" value="">Тепоходы#}
+{#                        </label>#}
+{#                    </div>#}
+{#                    <div class="checkbox">#}
+{#                        <label class="ew-icon-wd">#}
+{#                            <input type="checkbox" value="">Свадебные платья#}
+{#                        </label>#}
+{#                    </div>#}
+{#                    <div class="checkbox">#}
+{#                        <label class="ew-icon-transport">#}
+{#                            <input type="checkbox" value="">Реквизиты для меропреятий#}
+{#                        </label>#}
+{#                    </div>#}
+{#                    <div class="checkbox">#}
+{#                        <label class="ew-icon-transport">#}
+{#                            <input type="checkbox" value="">Отели#}
+{#                        </label>#}
+{#                    </div>#}
+{#                    <div class="checkbox">#}
+{#                        <label class="ew-icon-transport">#}
+{#                            <input type="checkbox" value="">Заказ тортов#}
+{#                        </label>#}
+{#                    </div>#}
+{#                    <div class="checkbox">#}
+{#                        <label class="ew-icon-transport">#}
+{#                            <input type="checkbox" value="">Заказ букетов#}
+{#                        </label>#}
+{#                    </div>#}
+{#                    <div class="checkbox">#}
+{#                        <label class="ew-icon-transport">#}
+{#                            <input type="checkbox" value="">Оформление помещений#}
+{#                        </label>#}
+{#                    </div>#}
+{#                    <div class="checkbox">#}
+{#                        <label class="ew-icon-transport">#}
+{#                            <input type="checkbox" value="">Свадьба, Венчание#}
+{#                        </label>#}
+{#                    </div>#}
+{#                    <div class="checkbox">#}
+{#                        <label class="ew-icon-transport">#}
+{#                            <input type="checkbox" value="">Меропреятия за границей#}
+{#                        </label>#}
+{#                    </div>#}
+{#                    <div class="checkbox">#}
+{#                        <label class="">#}
+{#                            <input type="checkbox" value="">Кейтеринг#}
+{#                        </label>#}
+{#                    </div>#}
+
+
+    </section>
+
+    </main>
+
+    </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ block.super }}
+    <script src="{% static 'jquery-ui-1.11.4/jquery-ui.min.js' %}"></script>
+    <script type="text/javascript">
+        $("#{{ form.city.id_for_label }}").addClass("form-control");
+
+        $(function () {
+            $("#{{ form.event_date.id_for_label }}").datepicker({
+                showOn: "both",
+                buttonImage: "{% static 'images/calendar_icon.png' %}",
+                buttonImageOnly: true,
+                buttonText: "Select date",
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: "dd/mm/yy",
+                firstDay: 1, // Set the first day of the week: Sunday is 0, Monday is 1, etc.
+                defaultDate: +7,
+            });
+
+            // $("#{{ form.event_date.id_for_label }}").datepicker('setDate', new Date()); // default value
+        });
+    </script>
+{% endblock %}

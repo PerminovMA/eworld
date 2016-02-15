@@ -4,6 +4,7 @@ from django.views.generic import TemplateView
 from django.conf.urls import patterns, url, include
 from events.rest_api.api_router import router
 from eworld import views
+from events.views import add_event as add_event_view
 
 urlpatterns = patterns('',
                        url(r'dashboard', TemplateView.as_view(template_name='eworld/dashboard.html'), name='dashboard'),
@@ -21,6 +22,8 @@ urlpatterns = patterns('',
                            name='orders_list'),
                        url(r'single_order/(?P<order_id>[0-9]?)', views.single_order,
                            name='single_order'),
+
+                       url(r'add_event', add_event_view, name='add_event'),
 
                        url(r'rest_api/', include(router.urls, namespace='rest_api_urls')),
                        )
