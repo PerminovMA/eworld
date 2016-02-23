@@ -62,22 +62,27 @@
                         {{ form.name.errors }}
                         <input name="{{ form.name.html_name }}" id="{{ form.name.id_for_label }}" type="text" class="form-control input-lg" placeholder="{{ form.name.help_text }}">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group top30">
                         {{ form.event_date.errors }}
                         <label for="{{ form.event_date.id_for_label }}">{{ form.event_date.help_text }}</label>
                         <input name="{{ form.event_date.html_name }}" id="{{ form.event_date.id_for_label }}" type="text">
                     </div>
-                    <div class="form-group" style="display: inline-table">
+                    <div class="form-group top30">
                         {{ form.price.errors }}
-                        <input name="{{ form.price.html_name }}" type="number" class="form-control" id="{{ form.price.id_for_label }}" placeholder="{{ form.price.help_text }}" value="0" min="0"><div class="input-group-addon">&nbsp;руб.</div>
+                        <div class="row">
+                            <label class="col-md-2" for="{{ form.price.id_for_label }}">{{ form.price.help_text }}</label>
+                            <div class="col-md-5" style="display: table">
+                                <input name="{{ form.price.html_name }}" type="number" class="form-control" id="{{ form.price.id_for_label }}" placeholder="{{ form.price.help_text }}" value="0" min="0"><div class="input-group-addon">&nbsp;руб.</div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group top30">
                         {{ form.city.errors }}
                         <p class="ew-icon ew-icon-city">
                             {{ form.city }}
                         </p>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group top50">
                         {{ form.categories.errors }}
                         <label for="{{ form.categories.id_for_label }}">{{ form.categories.help_text }}</label>
 
@@ -90,17 +95,17 @@
                             {% endfor %}
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group top50">
                         {{ form.files.errors }}
                         <p class="ew-icon ew-icon-attach">
                             {{ form.files }}
                         </p>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group top30">
                         {{ form.description.errors }}
                         <textarea id="{{ form.description.id_for_label }}" name="{{ form.description.html_name }}" class="form-control input-lg" placeholder="{{ form.description.help_text }}" rows="3"></textarea>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group top30">
                         {{ form.requirements.errors }}
                         <textarea id="{{ form.requirements.id_for_label }}" name="{{ form.requirements.html_name }}" class="form-control input-lg" placeholder="{{ form.requirements.help_text }}" rows="3"></textarea>
                     </div>

@@ -11,10 +11,9 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def add_event(request):
-    cities_set = City.objects.all()  # TODO remove it
-    categories_set = Category.objects.all()  # TODO remove it
+    categories_set = Category.objects.all()
 
-    context = {"cities_set": cities_set, "categories_set": categories_set}
+    context = {"categories_set": categories_set}
 
     if not request.user.is_client:
         return HttpResponseForbidden(u'Только клиент может создавать проекты')
